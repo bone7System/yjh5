@@ -26,7 +26,6 @@ export default class Top extends React.Component{
         let userType = getLoginUser().userType;
         let menus = allMenus[userType];
         let list = menus.map((item,index) => {
-            console.info(window.location.href.split('#')[1]);
             let url = window.location.href.split('#')[1];
             let isBoolean = false;
             if(url && url.startsWith(item.url)){

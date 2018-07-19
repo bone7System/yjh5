@@ -1,0 +1,69 @@
+.container {
+    min-height: 100%;
+    background: url(./images/bg.jpg) no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    padding: 220px 0 24px;
+    flex: 1;
+}
+
+.main {
+    width: 368px;
+    margin: 0 auto;
+}
+
+.tabs {
+    padding: 0 2px;
+    margin: 0 -2px;
+}
+
+.tabs :global .ant-tabs-tab {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.tabs :global .ant-input-affix-wrapper .ant-input:not(:first-child) {
+    padding-left: 34px;
+}
+
+.container :global .ant-tabs .ant-tabs-bar {
+    border-bottom: 0;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.submit {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.icon_qq {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    background: url(./images/qq.png) no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.icon_wechat {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    background: url(./images/wx.png) no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.getCaptcha {
+    display: block;
+    width: 100%;
+}

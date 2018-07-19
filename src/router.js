@@ -11,6 +11,7 @@ function RouterConfig({ history , app }) {
   const Top = Dynamic({app,component: () => import('./layouts/Top')});
   const Footer = Dynamic({app,component: () => import('./layouts/Footer')});
   const MyContent = Dynamic({app,component: () => import('./layouts/Content')});
+  const Login = Dynamic({app,component: () => import('./app/Login')});
   //业主
   const OwnerHome = Dynamic({app,component: () => import('./app/owner/home')});//首页
 
@@ -39,8 +40,9 @@ function RouterConfig({ history , app }) {
                       {/* 只有获取过登录用户数据之后，才能进行操作 */}
                       {/* <Route location={location} path="/" render={() => (<Home />)} />
                       <Route location={location} path="/login" render={() => (<Home />)} /> */}
-                      <Route path="/" exact component={Home} />
-                      <Route path="/login" exact component={Home} />
+                      <Route path="/" exact component={Login} />
+                      <Route path="/login" exact component={Login} />
+                      <Route path="/home" exact component={Home} />
                       <Route location={location} render={({ location }) => {
                           return (
                             <div style={{ height: '100%' }}>
