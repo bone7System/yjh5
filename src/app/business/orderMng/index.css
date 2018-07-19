@@ -1,0 +1,46 @@
+
+.c02{
+    height:100px;
+    width:100%;
+}
+.c03{
+    width:100%;
+    background: #FFE6E2;
+    padding-bottom: 50px;
+}
+.c04{
+    height:100px;
+    width:50%;
+    float: left;
+}
+.c05{
+    height:100px;
+    width:40%;
+    float: right;
+}
+.c06{
+    font-weight: bold;
+    font-size: 18px;
+    color: black;
+    margin-left: 30px;
+    margin-top: 25px;
+}
+.c07{
+    font-size: 14px;
+    color:#5A5A5A;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.c08{
+    text-align: right;
+    margin-top: 52px;
+    margin-right: 30px;
+}
+.c09{
+    padding-top:15px;
+    padding-left: 15px;
+}
+.c10{
+    text-align: center;
+     margin-top: 16px;
+}

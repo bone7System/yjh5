@@ -1,0 +1,25 @@
+.topCss{
+    height:100px;
+    background: transparent;
+}
+
+.css01{
+    height: 60px;
+    width: 300px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.css02{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.css03{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+}
