@@ -1,8 +1,10 @@
+import {allMenus} from './menu';
+
 /**
  * 获取登陆用户信息 
  * {
  *  userId:'admin', //登录账号
- *  userType:'owner', //用户类型，owner：业主，business：商家
+ *  userType:'owner', //用户类型，background:后台维护人员 ,owner：业主，business：商家
  *  userName:'管理员', //用户名
  * }
  * 
@@ -10,10 +12,11 @@
 export const getLoginUser = () => {
     let loginUser = sessionStorage.getItem('userLogin') ? JSON.parse(sessionStorage.getItem('userLogin')) : {};
     loginUser = {
-        userId:'18820160160',
-        userType:'business',
-        userName:'用户名'
+        userId:'admin',
+        userType:'background',
+        userName:'管理员'
     }
+    loginUser.menus=allMenus[loginUser.userType];
     return loginUser;
 }
 

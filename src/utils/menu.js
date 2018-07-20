@@ -1,4 +1,19 @@
 export const allMenus={
+    //后台维护人员
+    background:[
+        {
+            url:'/background/home',
+            key:'backgroundHome',
+            name:'首页',
+            icon: 'home',
+        },
+        {
+            url:'/background/dmk',
+            key:'backgroundDmk',
+            name:'代码库管理',
+            icon: 'file-text',
+        }
+    ],
     //业主
     owner:[
         {

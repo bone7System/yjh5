@@ -1,0 +1,16 @@
+.logo{
+	height: 64px;
+	line-height: 64px;
+	overflow: hidden;
+	text-align: center;
+}
+.logo span{
+	text-align: left;
+	color: white;
+	display: block;
+	width: 200px;
+	font-size: 20px;
+	padding-left: 10px;
+	float: right;
+	font-family:  Microsoft YaBai;
+}

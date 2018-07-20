@@ -11,7 +11,9 @@ function RouterConfig({ history , app }) {
   const Top = Dynamic({app,component: () => import('./layouts/Top')});
   const Footer = Dynamic({app,component: () => import('./layouts/Footer')});
   const MyContent = Dynamic({app,component: () => import('./layouts/Content')});
-  const Login = Dynamic({app,component: () => import('./app/Login')});
+  const Login = Dynamic({app,component: () => import('./app/Login/background')});//后台管理人员登录界面
+  //后台管理
+  const Background = Dynamic({app,component: () => import('./routes/Background')});
   //业主
   const OwnerHome = Dynamic({app,component: () => import('./app/owner/home')});//首页
 
@@ -29,7 +31,7 @@ function RouterConfig({ history , app }) {
 
 
 
-  const Home = Dynamic({app,component: () => import('./routes/IndexPage')});//首页
+  
 
   return (
       <Router history={history}>
@@ -42,7 +44,7 @@ function RouterConfig({ history , app }) {
                       <Route location={location} path="/login" render={() => (<Home />)} /> */}
                       <Route path="/" exact component={Login} />
                       <Route path="/login" exact component={Login} />
-                      <Route path="/home" exact component={Home} />
+                      <Route path="/background" component={Background} />
                       <Route location={location} render={({ location }) => {
                           return (
                             <div style={{ height: '100%' }}>
