@@ -1,6 +1,7 @@
 import React from 'react';
 // import { Row , Col} from 'antd';
 import styleCss from './index.css';
+import getSize from '../../../utils/getSize';
 
 export default class Content extends React.Component{
 
@@ -13,8 +14,10 @@ export default class Content extends React.Component{
 
     render(){
         return (
-            <div>
-                首页
+            <div className={styleCss.main_right_content} style={{height:getSize().windowH-80}}>
+                <div className={styleCss.table} >
+                   这是首页
+                </div>
             </div>
         )
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route , Switch ,Link } from 'dva/router';
 import Dynamic from 'dva/dynamic';
+import createHashHistory from 'history/createHashHistory';
 import { Layout , Menu  , Icon } from 'antd';
 import getSize  from '../utils/getSize'
 import {getLoginUser} from '../utils/NHCore';
@@ -10,6 +11,7 @@ import styles from './style.css';
 const userIconImg = require.context("./images/icons", true, /(\.gif|\.jpeg|\.png|\.jpg|\.bmp)/);
 const { Content , Sider } = Layout;
 const { SubMenu } = Menu;
+const hashHistory = createHashHistory();
 
 
 function RouterConfig({ history , app }) {
@@ -27,6 +29,7 @@ function RouterConfig({ history , app }) {
 
   //基础组件
   const Top = Dynamic({app,component: () => import('../app/background/layouts/Top')});
+  const Error403 = Dynamic({app,component: () => import('../layouts/Exception/403')});
   //功能模块
   const Home = Dynamic({app,component: () => import('../app/background/home')});//首页
   const Dmk = Dynamic({app,component: () => import('../app/background/dmk')});//代码库
@@ -91,15 +94,14 @@ function RouterConfig({ history , app }) {
                             </Sider>
                             <Layout>
                               <Top />
-                              <Content style={{height:getSize().windowH-65,overflow:'auto',paddingTop:'15px',paddingLeft:'15px',paddingRight:'15px'}}>
-                                  <div style={{background:'white',height:'100%',width:'100%'}}>
-                                    <Switch location={location} key={'switchKey'} >
-                                      <Route location={location} path="/background/home" render={() => <Home  location={location}/>}/>
-                                      <Route location={location} path="/background/dmk" render={() => <Dmk  location={location}/>}/>
+                              <Content style={{overflow:'auto'}}>
+                                <Switch location={location} key={'switchKey'} >
+                                    <Route location={location} path="/background/403" render={() => <Error403  location={location}/>}/>
+                                    <Route location={location} path="/background/home" render={() => <Home  location={location}/>}/>
+                                    <Route location={location} path="/background/dmk" render={() => <Dmk  location={location}/>}/>
 
 
-                                    </Switch>
-                                  </div>
+                                </Switch>
                               </Content>
                             </Layout>
                             </Layout>
@@ -130,6 +132,12 @@ function getSelectedKeys(menus){
                     selectedKeys.push(item.key);
                 }
             }
+        });
+    }
+    if(selectedKeys.length<=0){
+        let url=menus[0].children?menus[0].children[0].url:menus[0].url;
+        hashHistory.push({
+            pathname: menus[0].url,
         });
     }
     return selectedKeys;
