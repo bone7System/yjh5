@@ -3,7 +3,6 @@ import { Router, Route , Switch ,Link } from 'dva/router';
 import Dynamic from 'dva/dynamic';
 import createHashHistory from 'history/createHashHistory';
 import { Layout , Menu  , Icon } from 'antd';
-import getSize  from '../utils/getSize'
 import {getLoginUser} from '../utils/NHCore';
 import logo_collapsed from './images/logo-s.png';
 import styles from './style.css';
@@ -21,6 +20,7 @@ function RouterConfig({ history , app }) {
   let imgIconData = userIconImg.keys().map(userIconImg);
   userIconImg.keys().map((imgName, key) => {
       iconData[imgName] = imgIconData[key];
+      return imgName;
   });
   const initState = getLoginUser();
   let leftMenu=initState.menus?initState.menus:[];
@@ -56,7 +56,7 @@ function RouterConfig({ history , app }) {
                                 width={255}
                               >
                                 <div className={styles.logo}>
-                                    <img style={{maxWidth:40,maxHeight:40}} src={logo_collapsed}/>
+                                    <img style={{maxWidth:40,maxHeight:40}} alt="" src={logo_collapsed}/>
                                     {!collapsed &&
                                         <span><b>Demo项目</b></span>}
                                 </div>
@@ -68,23 +68,23 @@ function RouterConfig({ history , app }) {
                                       onClick={(item) => {}}
                                 >
                                      {leftMenu.map((item, index) => {
-                                        if (item.children && item.children != '') {
+                                        if (item.children && item.children !== '') {
                                             let htmlct = [];
                                             let menuItem = item.children.map((itemM, index) => {
                                                 return <Menu.Item key={itemM.key}>
                                                     <Link key={1} to={itemM.url} >
-                                                        {iconData[itemM.icon]?<img className='anticon'  src={iconData[itemM.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={itemM.icon} />}
+                                                        {iconData[itemM.icon]?<img className='anticon' alt=''  src={iconData[itemM.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={itemM.icon} />}
                                                         <span>{itemM.name}</span>
                                                     </Link></Menu.Item>
                                             })
                                             htmlct.push(<SubMenu key={item.key} title={<span>
-                                                {iconData[item.icon]?<img className='anticon'  src={iconData[item.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={item.icon} />}
+                                                {iconData[item.icon]?<img className='anticon' alt='' src={iconData[item.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={item.icon} />}
                                                 <span>{item.name}</span></span>}>{menuItem}</SubMenu>)
                                             return htmlct
                                         }else{
                                             return <Menu.Item key={item.key}>
                                                 <Link key={1} to={item.url} >
-                                                    {iconData[item.icon]?<img className='anticon'  src={iconData[item.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={item.icon} />}
+                                                    {iconData[item.icon]?<img className='anticon' alt='' src={iconData[item.icon]} style={{width:'14px',height:'14px',marginRight:'10px'}}/>:<Icon type={item.icon} />}
                                                     <span>{item.name}</span>
                                                 </Link>
                                             </Menu.Item>
@@ -126,18 +126,20 @@ function getSelectedKeys(menus){
                     if(curUrls.startsWith(cItem.url)){
                         selectedKeys.push(cItem.key);
                     }
+                    return cItem;
                 });
             }else{
                 if(curUrls.startsWith(item.url)){
                     selectedKeys.push(item.key);
                 }
             }
+            return item;
         });
     }
     if(selectedKeys.length<=0){
         let url=menus[0].children?menus[0].children[0].url:menus[0].url;
         hashHistory.push({
-            pathname: menus[0].url,
+            pathname: url,
         });
     }
     return selectedKeys;

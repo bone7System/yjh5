@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Layout, Row, Col, Dropdown, Avatar, Tabs } from 'antd'
+import { Menu, Icon, Layout, Row, Col, Dropdown, Avatar } from 'antd'
 import touxiangman from './images/touxiangman-s.png';
 import touxiangwoman from './images/touxiangwoman-s.png';
 // import { userLogout } from "../../actions/login";
@@ -8,7 +8,6 @@ import { getLoginUser } from '../../../../utils/NHCore';
 import NHModal from "../../../../components/NHModal";
 import EditPassWordForm from "./editPassWord";
 const { Header } = Layout
-const TabPane = Tabs.TabPane;
 
 export default class Top extends React.Component {
     constructor(props) {
@@ -116,7 +115,7 @@ export default class Top extends React.Component {
                     <Col span={12} style={{ textAlign: 'right',paddingRight:'20px'}}>
                         <Dropdown overlay={menu}>
                             <span className='action account'>
-                                <Avatar size="small" className='avatar' src={this.state.userSex == '1' ? touxiangman : touxiangwoman} />
+                                <Avatar size="small" className='avatar' src={this.state.userSex === '1' ? touxiangman : touxiangwoman} />
                                 <span className='name'>{this.state.username}</span>
                             </span>
                         </Dropdown>
