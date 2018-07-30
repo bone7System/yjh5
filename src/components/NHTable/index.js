@@ -370,7 +370,15 @@ class NHTable extends React.Component {
 
 
     components = {
-        table:(props) => <Scrollbars onScroll={this.onScroll} autoHide style={{ width: '100%', height: this.state.height }}><table {...props} ></table></Scrollbars>,
+        table:(props) => <Scrollbars onScroll={this.onScroll} 
+                                    autoHide 
+                                    style={{ width: '100%'}}
+                                    autoHeight
+                                    autoHeightMin={0}
+                                    autoHeightMax={this.state.height}
+                                    thumbMinSize={30}
+                                     universal={true}
+            ><table {...props} ></table></Scrollbars>,
     }
 
    
