@@ -1,3 +1,7 @@
+:global .nhTable div.ant-select-selection{
+    border-width: 0px !important;
+}
+
 .searchDiv {
     margin-bottom: 16px;
 }
@@ -105,4 +109,78 @@
     color: #1890ff;
     font-size: 14px;
     margin-right: 5px;
+}
+
+
+:global .nhTable .ant-table-fixed-header .ant-table-scroll .ant-table-header{
+	margin-bottom: 0px !important;
+	overflow-x: hidden !important;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th {
+	padding: 9px 8px;
+}
+
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-thead > tr > th {
+	padding: 9px 8px;
+}
+
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-thead > tr > th {
+	padding: 9px 8px;
+}
+
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header{
+	overflow: auto;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body{
+	overflow: auto !important;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner{
+	overflow: auto !important;
+	margin-top: -2px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner{
+	overflow: auto !important;
+	margin-top: -2px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body  table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner table > .ant-table-tbody > tr > td {
+	padding: 5px 8px;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right{
+	height:100%;
+	right:1px;
+	padding-right:2px;
+	background: white;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left{
+	height:100%;
+	
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-header{
+	border-left: 1px solid #e8e8e8;
+	border-bottom: 1px solid #e8e8e8;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-header{
+	border-right: 1px solid #e8e8e8;
+	border-bottom: 1px solid #e8e8e8;
+	border-left: 1px solid #e8e8e8;
+}
+:global .nhTable .ant-table-small > .ant-table-content > .ant-table-fixed-left  .ant-table-tbody > tr > td:last-child{
+	border-right: 1px solid #e8e8e8 !important;
 }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Table, Input, Button, Icon, Select, Checkbox, message } from 'antd';
+import { Table, Input, Button, Icon, Row, Col, Modal, Select, Checkbox, message } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { getSuitHeight, createUuid, getStyle  } from '../../utils/NHCore';
+import { getSuitHeight, createUuid, getStyle , getLoginUser } from '../../utils/NHCore';
+import { baseUrl } from '../../utils/NHPrefixUrl';
 import styles from './style.css';
 import Action from './action.js';
 import ExpExcel from './expexcel.js';
@@ -17,7 +18,6 @@ class NHTable extends React.Component {
     static defaultProps = {
         sign: undefined,//【强制存在】数据源的标志
         rowKey: undefined, //【推荐存在】设置的rowKey,在selectedRowKeys中存放的数据就是这个字段的值
-        size:'',//small
         searchParams: {},//【推荐存在】查询条件的参数
         sqlParams: {},//【根据需求判断】放在sql语句语句中的参数
         initParams: {},//初始化过滤的参数，这个不会根据重置而改变
@@ -32,17 +32,17 @@ class NHTable extends React.Component {
         defaultExpandedRowKeys: undefined,//默认展开的行
         expandedRowRender: undefined,//展开行的回调方法认展开的行
         action: [],
-        bordered: false,//是否展示外边框和列边框
+        bordered: true,//是否展示外边框和列边框
         titleHeight: 40,//Title头部的高度，这个主要是为了解决出现多级表头的时候，高度计算会出现问题
         showHeader: true,//是否显示头部
         url: undefined,//后台访问地址，传了此路径就表示后台查询使用此路径而不是使用通用路径
+        rangeFilter: false, //是否开启职务范围过滤
         isDefaultLoadData: true ,//是否默认加载数据，如果此参数为false,则默认不会加载数据,且此时显示加载中，这个主要是为了在当前模块还需要去后台查询初始化参数时，会出现开始就查询两次的情况
-        mackData:undefined,//默认加载的数据，这个主要用于原型的时候
     };
     constructor(props) {
         super(props)
         this.state = {
-            columns: this.props.columns,
+            // columns: this.props.columns,
             filterDropdownVisibleMap: {},
             searchParams: this.props.searchParams,//自定义的搜索条件
             searchTextMap: {},//下拉框查询的值,用作查询
@@ -55,9 +55,9 @@ class NHTable extends React.Component {
             pageData: {//分页设置的是三个参数
                 total: 0,
                 pageSize: (this.props.footerFlag === false ? 10000000 : 20),//当前页默认多少条数据
-                page: 1
+                page: 0
             },
-            height: this.props.height, //列表的高度
+            height: this.props.autoHeightFlag===true?undefined:this.props.height, //列表的高度
             width: undefined,//列表的宽度
             className: createUuid(),
             tySearchAllField: '',//通用查询的所有字段
@@ -67,45 +67,30 @@ class NHTable extends React.Component {
     }
     //在组件挂载之前调用一次。如果在这个函数里面调用setState，本次的render函数可以看到更新后的state，并且只渲染一次。
     UNSAFE_componentWillMount() {
-        if(this.props.isDefaultLoadData!==false && this.props.mackData===undefined){
+        if(this.props.isDefaultLoadData!==false){
             this.filterTableData();
         }
         //循环判断哪些字段需要通用查询的搜索条件
         if (this.props.searchDivFlag !== false) {
             let tySearchAllField = "multiField";//自定义查询的所有字段
-            this.state.columns.map((item, index) => {
-                if (item.commonSearch !== false && item.title !== '序号' && item.title !== '操作') {
+            this.props.columns.map((item, index) => {
+                if (item.commonSearch !== false && item.title != '序号' && item.title != '操作') {
                     tySearchAllField += "," + item.dataIndex;
                 }
-                return item;
             });
             this.setState({
                 tySearchAllField: tySearchAllField,
                 searchField: tySearchAllField
             });
         }
-        //存在默认数据
-        if(this.props.mackData!==undefined){
-            setTimeout(() => {
-                this.setState({
-                    data:this.props.mackData
-                });
-            }, 500);
-        }
     }
     //在组件挂载之后调用一次。
-    UNSAFE_componentDidMount() {
+    componentDidMount() {
         this.refreshHeight();
     }
 
-    UNSAFE_componentDidUpdate() {
-        this.refreshHeight(); 
-         //存在默认数据
-         if(this.props.mackData!==undefined && this.state.data.length===0){
-            this.setState({
-                data:this.props.mackData
-            });
-        }
+    componentDidUpdate() {
+        this.refreshHeight();
     }
     refreshHeight = () => {
         //如果需要自适应高度
@@ -120,7 +105,8 @@ class NHTable extends React.Component {
                 reduceHeight = 5 + titleHeight;
             }
             height = height - reduceHeight;
-            if (!lastHeight || lastHeight !== height) {
+            // alert(height);
+            if (!lastHeight || lastHeight != height) {
                 this.setState({
                     height: height
                 });
@@ -148,7 +134,7 @@ class NHTable extends React.Component {
             pageData: {
                 total: this.state.pageData.total,
                 pageSize: this.state.pageData.pageSize,
-                page: 1
+                page: 0
             }
         }), function () {
             this.filterTableData();
@@ -170,7 +156,7 @@ class NHTable extends React.Component {
             pageData: {
                 total: this.state.pageData.total,
                 pageSize: this.state.pageData.pageSize,
-                page: 1
+                page: 0
             }
         }));
         this.readTableData();
@@ -184,11 +170,11 @@ class NHTable extends React.Component {
             .then(res => {
                 if (res) {
                     this.setState({
-                        data: res.data.list,
+                        data: res.data.content,
                         selectedRowKeys: [],
                         selectedRows: [],
                         pageData: {
-                            total: res.data.total,
+                            total: res.data.totalElements,
                             pageSize: this.state.pageData.pageSize,
                             page: this.state.pageData.page
                         }
@@ -209,6 +195,7 @@ class NHTable extends React.Component {
         let searchParams = this.state.searchParams;//传递过来的查询参数
         let sqlParams = this.props.sqlParams;//在sql语句中的参数
         let initParams = this.props.initParams;//初始化参数
+        let rangeFilter = this.props.rangeFilter; //是否根据职务范围过滤
 
         if (!searchParams) { searchParams = {}; }
         //对里面可能存在的参数值为sql语句进行处理
@@ -226,6 +213,12 @@ class NHTable extends React.Component {
             initParams: initParams,
             sign: this.props.sign
         };
+
+        //如果启用职位范围过滤
+        if (rangeFilter) {
+            let userId = getLoginUser() ? getLoginUser().userId : '';
+            params.rangeFilter = { id: userId };
+        }
         return params;
     }
     //当Table有变动的时候会触发此方法
@@ -281,7 +274,7 @@ class NHTable extends React.Component {
                         return;
                     }
                     // 本地
-                    window.open("api/zhxg-lxxt/proData/gridList/excel/export?uuid=" + res.data, "_blank");
+                    window.open("api/proData/gridList/excel/export?uuid=" + res.data, "_blank");
                 }
                 stopLoading();
             }).catch(err => stopLoading());
@@ -302,8 +295,8 @@ class NHTable extends React.Component {
     encodeSql = (params) => {
         for (let key in params) {
             if (key.toUpperCase().startsWith('SQL_') && params[key]) {
-                params[key] = params[key];
-                //params[key] = encode(params[key]);
+                // params[key] = encode(params[key]);
+                params[key] = params[key]
             } else if (key.toUpperCase().startsWith('G_') && params[key]) {
                 params[key] = this.encodeSql(params[key]);
             }
@@ -382,12 +375,12 @@ class NHTable extends React.Component {
 
    
     onScroll = (e1) => {
-        if(loadCount===0){
+        if(loadCount==0){
             let scrollLeft=e1.target.scrollLeft;
             let scrollTop=e1.target.scrollTop;
             let $parentObj=e1.target.parentNode.parentNode;
             let obj=$parentObj.classList.contains('ant-table-body')?'content':'none';
-            if(obj === 'none'){
+            if(obj == 'none'){
                 obj=$parentObj.parentNode.parentNode.classList.contains('ant-table-fixed-left')?'left':'right';
             }
             // console.info(obj);
@@ -399,7 +392,7 @@ class NHTable extends React.Component {
             //中间内容区
             let $content = $table.getElementsByClassName("ant-table-scroll")[0].getElementsByClassName("ant-table-body")[0].childNodes[0].childNodes[0];
             // console.info($content.scrollTop);
-            if(obj!=='content' && $content.scrollTop!==scrollTop){
+            if(obj!='content' && $content.scrollTop!=scrollTop){
                 // console.info("中间内容区调用");
                 loadCount++;
                 $content.scrollTop=scrollTop;
@@ -407,7 +400,7 @@ class NHTable extends React.Component {
             //左部固定内容区
             if($table.getElementsByClassName("ant-table-fixed-left")[0]){
                 let $left = $table.getElementsByClassName("ant-table-fixed-left")[0].getElementsByClassName("ant-table-body-inner")[0].childNodes[0].childNodes[0];
-                if($left && obj!=='left' && $left.scrollTop!==scrollTop){
+                if($left && obj!='left' && $left.scrollTop!=scrollTop){
                     // console.info("左边内容区调用");
                     loadCount++;
                     $left.scrollTop=scrollTop;
@@ -416,7 +409,7 @@ class NHTable extends React.Component {
             //右部固定内容区
             if($table.getElementsByClassName("ant-table-fixed-right")[0]){
                 let $right = $table.getElementsByClassName("ant-table-fixed-right")[0].getElementsByClassName("ant-table-body-inner")[0].childNodes[0].childNodes[0];
-                if($right && obj!=='right' && $right.scrollTop!==scrollTop){
+                if($right && obj!='right' && $right.scrollTop!=scrollTop){
                     // console.info("右边内容区调用");
                     loadCount++;
                     $right.scrollTop=scrollTop;
@@ -430,7 +423,7 @@ class NHTable extends React.Component {
 
     render() {
         function deepCopy(obj) {
-            if (typeof obj !== 'object') {
+            if (typeof obj != 'object') {
                 return obj;
             }
             var newobj = {};
@@ -443,8 +436,9 @@ class NHTable extends React.Component {
         let columns = []
         let minWidthCount = 0;//最小宽度列（只有最小宽度这个参数）
         let minAllWidth = 0;//最小宽度列宽度之和
+        let fieldCount = 0;//除开序号列和参数列的列数之和
         let fieldAllWidth = 0;//除开序号列和参数列的宽度之和
-        this.state.columns.map((item1) => {
+        this.props.columns.map((item1) => {
             let item = deepCopy(item1);
             if (item.hidden !== true) {
                 if (!item.dataIndex && item.key) {
@@ -458,30 +452,30 @@ class NHTable extends React.Component {
                 //列width或者minWidth必须至少设置一个
                 if (!item.width && !item.minWidth) {
                     alert("参数设置有误，width和minWidth必须设置一个！");
-                    return item;
+                    return;
                 }
                 //如果列的最小宽度不存在，则设置width为最小宽度
                 if (!item.minWidth) {
                     item.minWidth = item.width;
                 }
                 //项缓存冻结列的数据，因为当列的宽度总和小于列表宽度的时候不需要是使用冻结列的
-                if (item.fixed && item.fixed === 'left') {
+                if (item.fixed && item.fixed == 'left') {
                     item.cacheFixed = 'left';
-                } else if (item.fixed && item.fixed === 'right') {
+                } else if (item.fixed && item.fixed == 'right') {
                     item.cacheFixed = 'right';
                 }
                 delete item.fixed;
                 //获取一些数据给下面使用
                 if (item.dataIndex.toUpperCase() !== 'ROW_ID') {
-                    fieldAllWidth += parseInt(item.minWidth,10);
+                    fieldCount++;
+                    fieldAllWidth += parseInt(item.minWidth);
                 }
                 if (!item.width) {
                     minWidthCount++;
-                    minAllWidth += parseInt(item.minWidth,10);
+                    minAllWidth += parseInt(item.minWidth);
                 }
                 columns.push(item);
             }
-            return item;
         });
         /****************************以下操作是添加操作列*********************************/
         if (this.props.action && this.props.action.length > 0) {
@@ -490,16 +484,15 @@ class NHTable extends React.Component {
             //根据权限过滤掉没有权限的操作
             action1.map((item, index) => {
                 action.push(item);
-                return item;
             });
             if (action.length > 0) {
                 let actionWidth = 0;
-                if (action.length === 1) {
-                    actionWidth = 30 + action[0].title.length * 15;
-                } else if (action.length === 2) {
-                    actionWidth = 45 + action[0].title.length * 15 + action[1].title.length * 15;
+                if (action.length == 1) {
+                    actionWidth = 20 + action[0].title.length * 15;
+                } else if (action.length == 2) {
+                    actionWidth = 35 + action[0].title.length * 15 + action[1].title.length * 15;
                 } else {
-                    actionWidth = 105 + action[0].title.length * 15;
+                    actionWidth = 85 + action[0].title.length * 15;
                 }
                 columns.push({
                     title: '操作',
@@ -523,7 +516,7 @@ class NHTable extends React.Component {
                 const paddingRight = getStyle(obj.parentNode, "paddingRight") ? getStyle(obj.parentNode, "paddingRight") : 0;
                 const borderLeft = getStyle(obj.parentNode, "borderLeftWidth") ? getStyle(obj.parentNode, "borderLeftWidth") : 0;
                 const borderRight = getStyle(obj.parentNode, "borderRightWidth") ? getStyle(obj.parentNode, "borderRightWidth") : 0;
-                width = obj.parentNode.clientWidth - parseInt(paddintLeft,10) - parseInt(paddingRight,10) - parseInt(borderLeft,10) - parseInt(borderRight,10);
+                width = obj.parentNode.clientWidth - parseInt(paddintLeft) - parseInt(paddingRight) - parseInt(borderLeft) - parseInt(borderRight);
                 if (obj.className.includes('ant-table-expanded-row')) {
                     //如果为二级列表，则需要减去第一个TD的宽度
                     width = (width - 50) * 0.98;
@@ -545,59 +538,54 @@ class NHTable extends React.Component {
             tableWidth = getWidth(tableWidth, document.getElementsByClassName(this.state.className)[0]);
             //列的实际宽度
             let trueWidth = scollWidth + selectFieldWidth + expandWidth;
-           
             columns.map((item, index) => {
-                trueWidth += parseInt(item.minWidth,10);
-                return item;
+                trueWidth += parseInt(item.minWidth);
             });
             //如果列的宽度大于列表的宽度的时候，需要冻结列，减少10px是为了减少误差
             if (trueWidth > (tableWidth - 10)) {
                 columns.map((item, index) => {
-                    item.width = parseInt(item.minWidth,10);
+                    item.width = parseInt(item.minWidth);
                     if (item.cacheFixed) {
                         item.fixed = item.cacheFixed;
                     }
-                    return item;
                 });
                 width = trueWidth + 10;
-            } else if (trueWidth === (tableWidth - 10)) {//如果列的宽度等于列表的宽度的时候，不需要做任何的处理
+            } else if (trueWidth == (tableWidth - 10)) {//如果列的宽度等于列表的宽度的时候，不需要做任何的处理
                 columns.map((item, index) => {
-                    item.width = parseInt(item.minWidth,10);
-                    return item;
+                    item.width = parseInt(item.minWidth);
                 });
             } else {//如果列的宽度小于列表的宽度的时候，存在最小宽度列，则把剩余宽度平分到最小宽度列，如果没有，则平分到除了序号和操作列的其他列
                 const elseWidth = tableWidth - 10 - trueWidth;
-                if (minWidthCount === 0) {//没有扩展列
+                if (minWidthCount == 0) {//没有扩展列
                     columns.map((item, index) => {
                         if (item.dataIndex && item.dataIndex !== 'ROW_ID' && item.dataIndex !== 'ACTION') {
-                            item.width = parseInt(item.minWidth,10) + parseInt(elseWidth * parseInt(item.minWidth,10) / fieldAllWidth,10);
+                            item.width = parseInt(item.minWidth) + parseInt(elseWidth * parseInt(item.minWidth) / fieldAllWidth);
                         }
-                        return item;
                     });
                 } else {
                     columns.map((item, index) => {
                         if (!item.width) {//最小宽度列
-                            item.width = parseInt(item.minWidth,10) + parseInt(elseWidth * parseInt(item.minWidth,10) / minAllWidth,10);
+                            item.width = parseInt(item.minWidth) + parseInt(elseWidth * parseInt(item.minWidth) / minAllWidth);
                         }
-                        return item;
                     });
                 }
             }
         }
 
         /****************************以下部分页的参数,如果不需要尾部则这些信息不需要进行设置*********************************/
-        var Pagination = false;
         if (this.props.footerFlag !== false) {
-            Pagination = {
+            var Pagination = {
                 total: this.state.pageData.total,//数据总数
                 pageSize: this.state.pageData.pageSize,//每页的条数
-                current: this.state.pageData.page,//当前页数
+                current: this.state.pageData.page+1,//当前页数
                 showTotal: (total, range) => `当前${range[0]}-${range[1]}条 总数${total}条`,
                 showQuickJumper: true,
                 showSizeChanger: true,
                 pageSizeOptions: ['10', '20', '50', '100', '200', '500']
             };
-        } 
+        } else {
+            var Pagination = false;
+        }
 
         /****************************以下是设置是否需要选择框*********************************/
         if (this.props.checkbox !== false) {
@@ -609,10 +597,8 @@ class NHTable extends React.Component {
                         selectedRows: selectedRows,
                         selectedRowKeys: selectedRowKeys
                     });
-                    this.props.rowSelectionChange && this.props.rowSelectionChange(selectedRowKeys)
-                    if (this.props.onSelect) {
-                        this.props.onSelect(selectedRowKeys, selectedRows);
-                    }
+                    this.props.rowSelectionChange && this.props.rowSelectionChange(selectedRowKeys);
+                    this.props.onSelect && this.props.onSelect(selectedRowKeys, selectedRows);
                 }
             }
         }
@@ -620,9 +606,6 @@ class NHTable extends React.Component {
         let onRow = (record,index) => {
             return {
               onClick: (e3) => {
-                    // console.info(index);
-                    // console.info(e3.currentTarget);
-
                     let selectedRowKeys=this.state.selectedRowKeys;
                     let selectedRows=this.state.selectedRows;   
                     let key='';
@@ -633,7 +616,7 @@ class NHTable extends React.Component {
                     }
                     let isAdd=true;//默认是新增
                     for(let i=0;i<selectedRowKeys.length;i++){
-                        if(selectedRowKeys[i]===key){//存在说明是删除
+                        if(selectedRowKeys[i]==key){//存在说明是删除
                             selectedRowKeys.splice(i,1);
                             selectedRows.splice(i,1);
                             isAdd=false;
@@ -648,6 +631,9 @@ class NHTable extends React.Component {
                         selectedRows: selectedRows,
                         selectedRowKeys: selectedRowKeys
                     });
+
+                    this.props.rowSelectionChange && this.props.rowSelectionChange(selectedRowKeys);
+                    this.props.onSelect && this.props.onSelect(selectedRowKeys, selectedRows);
               },      
             };
           }
@@ -658,7 +644,7 @@ class NHTable extends React.Component {
             }
 
             //是否需要排序
-            if (item.sorted !== false && item.title !== '序号' && item.title !== '操作') {
+            if (item.sorted !== false && item.title !== '序号' && item.title != '操作') {
                 item.sorter = true;
             } else {
                 item.sorter = false;
@@ -723,13 +709,12 @@ class NHTable extends React.Component {
             else if (item.search && item.search === 'number') {
 
             }
-            return item;
         });
         /****************************以下获取能用于高级搜索的参数*********************************/
         let maxSearchTitle = 2;
         let searchLength = 0;
         let tyOptions = columns.map((item, index) => {
-            if (item.commonSearch !== false && item.title !== '序号' && item.title !== '操作') {
+            if (item.commonSearch !== false && item.title != '序号' && item.title != '操作') {
                 searchLength++;
                 if (item.title.length > maxSearchTitle) {
                     maxSearchTitle = item.title.length;
@@ -739,9 +724,9 @@ class NHTable extends React.Component {
                 return '';
             }
         })
-        
+        const modalStyle = { width: '100%', left: 0, top: 0, paddingLeft: 267, boxSizing: 'border-box' }
         return (
-            <div style={{ height: '100%', width: '100%' }}>
+            <div className={'nhTable'} style={{width:'100%',height:'100%'}}>
                 {
                     this.props.searchDivFlag !== false ? <div className={styles.searchDiv} id='homeSearchDiv' style={{ marginBottom: '16px' }}>
                         <Select value={this.state.searchField}
@@ -781,7 +766,7 @@ class NHTable extends React.Component {
 
                 <Table
                     className={this.state.className}
-                    size={this.props.size}
+                    size="small"
                     rowKey={this.props.rowKey}
                     rowSelection={rowSelection}
                     dataSource={this.state.data}
@@ -803,57 +788,8 @@ class NHTable extends React.Component {
                     width={570}
                     onOk={this.handleExportExcel}
                 >
-                    <ExpExcel ref="nhExpExcel" excelName={this.state.excelName} columns={this.state.columns} />
+                    <ExpExcel ref="nhExpExcel" excelName={this.state.excelName} columns={this.props.columns} />
                 </NHModal>
-                <style jsx="true" global="true">
-                        {`
-                            .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header{
-                                overflow: auto;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body{
-                                overflow: auto !important;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner{
-                                overflow: auto !important;
-                                margin-top: -2px;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner{
-                                overflow: auto !important;
-                                margin-top: -2px;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body  table > .ant-table-tbody > tr > td {
-                                padding: 5px 8px;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner table > .ant-table-tbody > tr > td {
-                                padding: 5px 8px;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner table > .ant-table-tbody > tr > td {
-                                padding: 5px 8px;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-right{
-                                height:100%;
-                                right:1px;
-                                padding-right:2px;
-                                background: white;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-left{
-                                height:100%;
-                                
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-right > .ant-table-header{
-                                border-left: 1px solid #e8e8e8;
-                                border-bottom: 1px solid #e8e8e8;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-header{
-                                border-right: 1px solid #e8e8e8;
-                                border-bottom: 1px solid #e8e8e8;
-                                border-left: 1px solid #e8e8e8;
-                            }
-                            .ant-table-small > .ant-table-content > .ant-table-fixed-left  .ant-table-tbody > tr > td:last-child{
-                                border-right: 1px solid #e8e8e8 !important;
-                            }
-                        `}
-                    </style>
             </div>
         )
     }

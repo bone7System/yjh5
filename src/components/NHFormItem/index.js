@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'antd';
-import { createUuid } from '../../utils/NHCore';
 import PropTypes from "prop-types";
 
 const FormItem = Form.Item;
@@ -50,8 +49,10 @@ class NHFormItem extends React.Component {
             });
         }
 
+       
         //是否显示表单项，用于权限控制
         if (showFlag) {
+           
             if (rules.length > 0) {
                 return (
                     <FormItem {...formItemLayout}
@@ -68,6 +69,16 @@ class NHFormItem extends React.Component {
                         })(
                             this.props.children
                         )}
+                    </FormItem>
+                )
+            } else if(!id){
+                return (
+                    <FormItem {...formItemLayout}
+                        label={label}
+                        colon={colon}
+                        extra={extra}
+                    >
+                        {this.props.children}
                     </FormItem>
                 )
             } else {
@@ -97,7 +108,7 @@ class NHFormItem extends React.Component {
 
 NHFormItem.defaultProps = {
     label: '',//标签的文本
-    id: createUuid(),//输入控件唯一标志
+    id: undefined,//输入控件唯一标志
     formItemLayout: {
         labelCol: {
             xs: { span: 24 },

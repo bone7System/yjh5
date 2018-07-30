@@ -1,1 +1,1 @@
-export const baseUrl="api/zhxg-lxxt";
+export const baseUrl="api/";

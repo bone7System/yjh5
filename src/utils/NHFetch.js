@@ -174,10 +174,10 @@ const NHFetch =  (pUrl,pMethod,params) => {
         .then((response) => response.json())
         .then((res) => {
             //判断是否没有权限
-            if((res.meta && res.meta.statusCode==='401') || res.code==='302'){
+            if((res.meta && res.meta.statusCode===401) || res.code===302){
                 message.error("您正在尝试访问未授权的功能!");
                 return undefined;
-            }else if(res.code && res.code !=='200' ){//判断出现的问题
+            }else if(res.code && res.code !==200 ){//判断出现的问题
                 let msg=res.message;
                 if(msg.startsWith("businessLogicError[")){//自定义的错误提示
                     Modal.error({ title: '错误提示', content: res.message.substring(19,res.message.length-1),});
@@ -196,12 +196,12 @@ const NHFetch =  (pUrl,pMethod,params) => {
             return res;
         })
         .catch((error) => {
-            if(error.status==='302'){
+            if(error.status===302){
                 message.error("未登录或登录已过期,请刷新页面重新登录！");
                 sessionStorage.removeItem("userLogin");
                 sessionStorage.removeItem("access_token");
             }else{
-                Modal.error({ title: '网络请求异常,请联系管理员', content: error,});
+                Modal.error({ title: '网络请求异常,请联系管理员', content: error.message});
             }
             return error;
         })

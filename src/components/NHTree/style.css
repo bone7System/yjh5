@@ -1,0 +1,52 @@
+.searchInput {
+    margin: 0 5px;
+    padding: 0;
+    width: 190px;
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    transition: all linear 0.5s;
+    text-indent: 10px;
+}
+
+.searchInput:active, .searchInput:focus, .searchInput:hover {
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+}
+
+.searchIcon {
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 16px
+}
+
+.searchHeader {
+    width: 100%;
+    text-align: right;
+    line-height: 40px;
+}
+
+.tree_div {
+    width: 90%;
+    margin: 20px auto;
+    border: 1px solid #91d5ff;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+.tooltip_div .ant-tooltip-inner {
+    max-width: 250px;
+    padding: 6px 8px;
+    color: #91d5ff;
+    text-align: left;
+    text-decoration: none;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #91d5ff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-height: 32px;
+}
