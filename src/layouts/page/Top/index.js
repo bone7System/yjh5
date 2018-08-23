@@ -2,8 +2,8 @@ import React from 'react';
 //import { Button} from 'antd';
 import createHashHistory from 'history/createHashHistory';
 import styleCss from './index.css';
-import {allMenus} from '../../utils/menu.js';
-import {getLoginUser , createUuid} from '../../utils/NHCore';
+import {allMenus} from '../../../utils/menu.js';
+import {getLoginUser , createUuid} from '../../../utils/NHCore';
 import logo from './images/logo.png';
 const hashHistory = createHashHistory();
 
@@ -12,7 +12,7 @@ export default class Top extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            
+
         }
     }
 
@@ -41,7 +41,7 @@ export default class Top extends React.Component{
 
                     <ul className={styleCss.c03}>
                         {list}
-                        
+
                         {/* <li className={styleCss.c04}><a >首页</a></li>
                         <li className={styleCss.c04}><a >商品发货情况</a></li>
                         <li className={styleCss.c04}><a >我的商品</a></li>

@@ -18,7 +18,7 @@ export default class Top extends React.Component{
 
 
     UNSAFE_componentWillMount(){
-        
+
 
     }
 
@@ -33,17 +33,17 @@ export default class Top extends React.Component{
 
     render(){
 
-       
+
 
         return (
-            <Layout style={{ height: getSize().windowH-64 }}>
+            <Layout style={{ height: getSize().windowH-110 }}>
                 <Sider width={300} style={{background:'white'}}>
                     <LeftTree
-                        height={getSize().windowH-64}
+                        height={getSize().windowH-110}
                         onTreeSelect={this.onTreeSelect}
                     />
                 </Sider>
-                <Content style={{margin:'12px 12px 0 12px',padding:'16px',background: '#fff'}}>
+                <Content style={{ height: getSize().windowH-110,overflow:'hidden'}}>
                     <RigntContent dmbz={this.state.dmbz} fflid={this.state.fflid} ref={'rightContentRef'}/>
                 </Content>
             </Layout>

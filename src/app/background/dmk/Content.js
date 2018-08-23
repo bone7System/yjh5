@@ -257,7 +257,7 @@ export default class RightContent extends Component {
             render: (text, record, index) => {
                 const status = record.zt == '1' ? true : false;
                 return (
-                   <Switch checkedChildren={'启动'} unCheckedChildren={'禁用'} checked={status} onChange={() => this.operateChange(record)} /> 
+                   <Switch checkedChildren={'启动'} unCheckedChildren={'禁用'} checked={status} onChange={() => this.operateChange(record)} />
                 );
             }
         });
@@ -271,7 +271,7 @@ export default class RightContent extends Component {
             s_dmbz_eq:this.props.dmbz?this.props.dmbz:'-1'
         }
         return (
-            <div style={{ minHeight: 280, height: getSize().windowH - 110, overflow: 'hidden' }}>
+            <div style={{ minHeight: 280, height: getSize().windowH - 123, overflow: 'hidden',margin:'12px 12px 0 12px',padding: '16px',background: '#fff' }}>
                 <div style={{display:this.state.frameVisibleMap.tableFlag?'block':'none',height: getSize().windowH - 110}}>
                     <NHTable ref={(nhTable) => { this.nhContentTable = nhTable }}
                         rowKey={record => record.pkid}
@@ -282,13 +282,13 @@ export default class RightContent extends Component {
                         action={action}
                     >
                         <Button type="primary" onClick={this.handleAddContent} disabled={this.props.dmbz?false:true}>维护代码常量</Button>
-                        <Button type="danger" ghost style={{ marginLeft: 10 , display: this.state.showOperationBtn ? undefined : 'none' }}  onClick={this.handleDelete}>删除</Button> 
+                        <Button type="danger" ghost style={{ marginLeft: 10 , display: this.state.showOperationBtn ? undefined : 'none' }}  onClick={this.handleDelete}>删除</Button>
                         <Button type="primary" ghost style={{ marginLeft: 10 , display: this.state.showOperationBtn ? undefined : 'none'}}  onClick={() => { this.handleChangePublish("1") }}>启用</Button>
                         <Button type="primary" ghost style={{ marginLeft: 10 , display: this.state.showOperationBtn ? undefined : 'none'}} onClick={() => { this.handleChangePublish("0") }}>禁用</Button>
                     </NHTable>
                 </div>
                 <NHContainerFrame ref="nhEditModal"
-                            title="编辑代码信息" 
+                            title="编辑代码信息"
                             visible={this.state.frameVisibleMap.editFlag}
                              onOk={this.handleSaveAdd}
                             onCancel={this.handleCloseFrame}
@@ -300,6 +300,6 @@ export default class RightContent extends Component {
                 </NHModal>
              </div>
         )
-        
+
     }
 }

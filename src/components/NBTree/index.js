@@ -19,9 +19,9 @@ const Search = Input.Search;
 /**
  * 树选择器
  * sql语句基础字段：key(value值),title:(显示的值)、selectFlag(是否可以选择，1：可以选择，0或null,不能选择)、parentKey(父Key)、icon（图标、1：文件夹，2：文件）
- * 
- * 
- * 
+ *
+ *
+ *
  */
 export default class NBTree extends React.Component {
     //设置可以传递参数的默认值
@@ -49,7 +49,7 @@ export default class NBTree extends React.Component {
             expandedKeys: [],
             searchValue: '',
             autoExpandParent: true,
-            data: [],//树数据 
+            data: [],//树数据
             dataList: [],//树列表数据,主要在过滤的时候使用
             singerDataMap: {},//单选时可以选择的数据，主要在选中数据的时候获取key所对应的完整的值
             multiDataMap: {},//多选时可以选择的数据，主要在选中数据的时候获取key所对应的完整的值
@@ -61,7 +61,7 @@ export default class NBTree extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-       
+
     }
 
     componentWillUnmount() {
@@ -278,7 +278,7 @@ export default class NBTree extends React.Component {
                     selectNodes.push(this.state.singerDataMap[checkedKey]);
                 }
             }
-            if(this.props.onSelect){ 
+            if(this.props.onSelect){
                 this.props.onSelect(selectKeys,selectNodes);
             }
         }
@@ -354,7 +354,7 @@ export default class NBTree extends React.Component {
         })
     }
 
-   
+
     renderTreeNodes = (data) => {
         return data.map((item) => {
             if (item.children) {
@@ -461,25 +461,26 @@ export default class NBTree extends React.Component {
                     />
                     {this.props.addBtn && <Icon type="plus" className={styles.searchIcon} onClick={this.props.addBtn} />}
                 </div>
-                {this.state.dataList.length == 0 && <div className={styles.tree_div}>正在加载数据。。。</div>}
+                {this.state.dataList.length === 0 && <div className={styles.tree_div}>正在加载数据。。。</div>}
+                {this.state.dataList.length !== 0 &&
+                  <Scrollbars autoHide style={{flex: `0 0 ${this.props.width}px`,height: height}}>地方
+                      <Tree
+                          showIcon={this.props.showIcon}
+                          checkable={this.props.checkable}
+                          onExpand={this.onExpand}
+                          expandedKeys={this.state.expandedKeys}
+                          autoExpandParent={this.state.autoExpandParent}
+                          onCheck={this.onCheck}
+                          checkedKeys={this.state.checkedKeys} //选中复选框的数据
+                          selectedKeys={this.state.selectedKeys} //选中节点的数据
+                          onSelect={this.onSelect}
+                          onRightClick={this.onRightClick}
+                      >
+                          {this.loop(this.state.data,1)}
+                      </Tree>
+                  </Scrollbars>
+                }
 
-                {/* 同步树 */}
-                <Scrollbars autoHide style={{flex: `0 0 ${this.props.width}px`,height: height}}>
-                    <Tree
-                        showIcon={this.props.showIcon}
-                        checkable={this.props.checkable} 
-                        onExpand={this.onExpand}
-                        expandedKeys={this.state.expandedKeys}
-                        autoExpandParent={this.state.autoExpandParent}
-                        onCheck={this.onCheck}
-                        checkedKeys={this.state.checkedKeys} //选中复选框的数据
-                        selectedKeys={this.state.selectedKeys} //选中节点的数据
-                        onSelect={this.onSelect}
-                        onRightClick={this.onRightClick}
-                    >
-                        {this.loop(this.state.data,1)}
-                    </Tree>
-                </Scrollbars>
             </Sider>
         )
     }

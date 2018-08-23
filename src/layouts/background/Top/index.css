@@ -1,0 +1,11 @@
+.action {
+    cursor: pointer;
+    padding: 0 12px;
+    display: inline-block;
+    transition: all .3s;
+    height: 100%;
+}
+
+.action:hover {
+    background: #e6f7ff;
+}
