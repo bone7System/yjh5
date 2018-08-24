@@ -463,7 +463,7 @@ export default class NBTree extends React.Component {
                 </div>
                 {this.state.dataList.length === 0 && <div className={styles.tree_div}>正在加载数据。。。</div>}
                 {this.state.dataList.length !== 0 &&
-                  <Scrollbars autoHide style={{flex: `0 0 ${this.props.width}px`,height: height}}>地方
+                  <Scrollbars autoHide style={{flex: `0 0 ${this.props.width}px`,height: height}}>
                       <Tree
                           showIcon={this.props.showIcon}
                           checkable={this.props.checkable}
