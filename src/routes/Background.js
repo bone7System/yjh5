@@ -12,6 +12,7 @@ function RouterConfig({ history , app }) {
     <BackLayout>
       <Route  path="/background/home" exact component={Dynamic({app,component: () => import("../app/background/home")})}/>
       <Route  path="/background/dmk" exact component={Dynamic({app,component: () => import("../app/background/dmk")})}/>
+      <AuthorizedRoute  path="/background/commondity" exact component={Dynamic({app,component: () => import("../app/erp/commondity")})}/>
 
 
     </BackLayout>

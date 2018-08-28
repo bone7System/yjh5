@@ -8,11 +8,17 @@ export const allMenus={
             icon: 'home',
         },
         {
-            url:'/background/dmk',
-            key:'backgroundDmk',
-            name:'代码库管理',
+            url:'/background/commondity',
+            key:'backgroundCommondity',
+            name:'商品管理',
             icon: 'file-text',
         },
+        {
+          url:'/background/dmk',
+          key:'backgroundDmk',
+          name:'代码库管理',
+          icon: 'file-text',
+      },
         {
           url:'/page/business/order',
           key:'businessOrder',
