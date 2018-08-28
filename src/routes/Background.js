@@ -5,7 +5,6 @@ import AuthorizedRoute from './AuthorizedRoute';
 import BackLayout from '../layouts/background/layout/index';
 
 
-
 function RouterConfig({ history , app }) {
 
   return (

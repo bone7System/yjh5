@@ -24,7 +24,7 @@ class NHContainerFrame extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-       
+
     }
 
     stopLoading = () => {
@@ -43,7 +43,7 @@ class NHContainerFrame extends React.Component {
     }
 
     render() {
-        
+
         const { title, description, visible, style, contentWidth, footer, onCancel , scrollHeight } = this.props;
 
         //最外层容器框架样式
@@ -99,7 +99,7 @@ class NHContainerFrame extends React.Component {
                 );
                 buttons.push(customButton);
             }
-        }else{
+        }else if(this.props.onOk){
             buttons.push(<Col key={createUuid()}>
                 <Button type="primary" onClick={this.handleSave} loading={this.state.loading}>
                     保存
@@ -141,7 +141,7 @@ class NHContainerFrame extends React.Component {
                     {
                         scrollHeight?contentFixedHeight:contentAutoHeight
                     }
-                    
+
                 </div>
             );
         } else {
@@ -157,7 +157,7 @@ NHContainerFrame.defaultProps = {
     title: "标题", //页面标题
     visible: false, //默认不可见
     contentWidth: 24, //内容宽度，以24列栅格为准
-    onOk: () => { },
+    onOk: undefined,
     scrollHeight: undefined,
 }
 

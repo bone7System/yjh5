@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'dva/router';
+// import { Route } from 'dva/router';
 import Dynamic from 'dva/dynamic';
 import AuthorizedRoute from './AuthorizedRoute';
 import PageLayout from '../layouts/page/layout/index';

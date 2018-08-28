@@ -4,9 +4,9 @@ import getSize from "../../../utils/getSize";
 import NHFetch from "../../../utils/NHFetch";
 import NHTable from '../../../components/NHTable';
 import {NHConfirm} from '../../../components/NHModal';
-// import NHContainerFrame from '../../../components/NHContainerFrame';
-// import EditForm from './EditForm.js';
-// import ViewForm from './ViewForm.js';
+import NHContainerFrame from '../../../components/NHContainerFrame';
+import EditForm from './EditForm.js';
+import ViewForm from './ViewForm.js';
 import css from './index.css';
 
 class TemplateTab extends React.Component {
@@ -59,8 +59,8 @@ class TemplateTab extends React.Component {
     }
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
-        let pkid = record.PKID;
-        NHFetch('/demo/simpleTable/' + pkid + '/get', 'GET')
+        let spid = record.spid;
+        NHFetch('/commodity/getByPkid', 'GET',{pkid:spid})
             .then(res => {
                 if(res){
                     this.setState({formInitData: res.data});
@@ -70,8 +70,8 @@ class TemplateTab extends React.Component {
     }
     //查看按钮点击事件
     handleViewBtnClick = (record) => {
-        let pkid = record.PKID;
-        NHFetch('/demo/simpleTable/' + pkid + '/get', 'GET')
+        let spid = record.spid;
+        NHFetch('/commodity/getByPkid', 'GET',{pkid:spid})
             .then(res => {
                 if(res){
                     this.setState({formInitData: res.data});
@@ -83,7 +83,7 @@ class TemplateTab extends React.Component {
     //单行删除
     handleSingleDeleteBtnClick = (record) => {
        NHConfirm("是否确定删除这条数据？",() => {
-           let pkid = record.PKID;
+           let pkid = record.spid;
            this.handleDelete([pkid]);
        },"warn");
     }
@@ -100,7 +100,7 @@ class TemplateTab extends React.Component {
     }
     //删除操作
     handleDelete = (pkids) => {
-        NHFetch('/demo/simpleTable/deleteByMulti' , 'POST' , pkids)
+        NHFetch('/commodity/deleteMulti' , 'POST' , pkids)
             .then(res => {
                 if (res) {
                     message.success("删除操作成功！");
@@ -112,15 +112,10 @@ class TemplateTab extends React.Component {
     handleSaveAdd = (stopLoading) => {
         this.refs.nhAddForm.validateFields((err, formData) => {
             if (err) {
-                return;
+              stopLoading();
+              return;
             }
-            //处理级联下拉框的值
-            formData.sfdm=formData.jlxlk[0];
-            formData.csdm=formData.jlxlk[1];
-            formData.qxdm=formData.jlxlk[2];
-            //处理日期选择器的值，日期必须处理下，否则保存会报错
-            formData.rq=new Date(formData.rq).valueOf();
-            NHFetch('/demo/simpleTable/insert' , 'POST' , formData)
+            NHFetch('/commodity/insert' , 'POST' , formData)
                 .then(res => {
                     stopLoading();
                     if (res) {
@@ -136,16 +131,14 @@ class TemplateTab extends React.Component {
     handleSaveUpdate = (stopLoading) => {
         this.refs.nhUpdateForm.validateFields((err, formData) => {
             if (err) {
-                return;
+               stopLoading();
+               return;
             }
-            formData.pkid = this.state.formInitData.pkid;
-            //处理级联下拉框的值
-            formData.sfdm=formData.jlxlk[0];
-            formData.csdm=formData.jlxlk[1];
-            formData.qxdm=formData.jlxlk[2];
-            //处理日期选择器的值，日期必须处理下，否则保存会报错
-            formData.rq=new Date(formData.rq).valueOf();
-            NHFetch('/demo/simpleTable/update' , 'POST' , formData)
+            formData.spid = this.state.formInitData.spid;
+            formData.spxqid = this.state.formInitData.spxqid;
+            formData.spjgid = this.state.formInitData.spjgid;
+            formData.mdid = this.state.formInitData.mdid;
+            NHFetch('/commodity/update' , 'POST' , formData)
                 .then(res => {
                     stopLoading();
                     if (res) {
@@ -161,15 +154,18 @@ class TemplateTab extends React.Component {
     render() {
         //列参数
         const columns = [
-            {title: '序号',width: '60px',dataIndex: 'ROW_ID',fixed:'left'},
-            {title: '商品代码',minWidth: '160px',dataIndex: 'spdm',fixed:'left'},
-            {title: '商品名称',width: '90px',dataIndex: 'spmc',fixed:'left'},
-            {title: '日期',width: '100px',dataIndex: 'RQ'},
-            {title: '下拉框',minWidth: '120px',dataIndex: 'MZMMC'},
-            {title: '省份',minWidth: '120px',dataIndex: 'SFMC'},
-            {title: '城市',minWidth: '120px',dataIndex: 'CSMC'},
-            {title: '区县',minWidth: '120px',dataIndex: 'QXMC'},
-            {title: '文本框',minWidth: '300px',dataIndex: 'WBK'},
+            {title: '序号',width: '60px',dataIndex: 'rn',fixed:'left'},
+            {title: '商品代码',width: '100px',dataIndex: 'spbm',fixed:'left'},
+            {title: '商品名称',minWidth: '90px',dataIndex: 'spmc',fixed:'left'},
+            {title: '商品类型',minWidth: '100px',dataIndex: 'splx'},
+            {title: '商品品牌',minWidth: '100px',dataIndex: 'sppp'},
+            {title: '规格',minWidth: '100px',dataIndex: 'gg'},
+            {title: '等级',minWidth: '100px',dataIndex: 'dj'},
+            {title: '单位',minWidth: '100px',dataIndex: 'dw'},
+            {title: '标准价格',width: '100px',dataIndex: 'bzjg',render:(text,record) => {
+              return <div style={{textAlign:'right'}}>{text}</div>
+            }},
+
         ];
         //行内操作
         const action = [
@@ -192,11 +188,12 @@ class TemplateTab extends React.Component {
                         <Button type="danger" ghost style={{marginRight:10,display: this.state.showOperationBtn ? undefined : 'none'}} onClick={this.handleMultiDeleteBtnClick}>删除</Button>
                     </NHTable>
                 </div>
-                {/* <NHContainerFrame ref="nhAddModal"
+                <NHContainerFrame ref="nhAddModal"
                          title="新增基础数据信息"
                          visible={this.state.frameVisibleMap.addFlag}
                          onOk={this.handleSaveAdd}
                          onCancel={this.handleCloseFrame}
+                         scrollHeight={getSize().windowH-190}
                 >
                     <EditForm ref="nhAddForm"/>
                 </NHContainerFrame>
@@ -205,6 +202,7 @@ class TemplateTab extends React.Component {
                          visible={this.state.frameVisibleMap.updateFlag}
                          onOk={this.handleSaveUpdate}
                          onCancel={this.handleCloseFrame}
+                         scrollHeight={getSize().windowH-190}
                 >
                     <EditForm ref="nhUpdateForm" editData={this.state.formInitData}/>
                 </NHContainerFrame>
@@ -212,9 +210,10 @@ class TemplateTab extends React.Component {
                          visible={this.state.frameVisibleMap.showFlag}
                          title="查看基础数据信息"
                          onCancel={this.handleCloseFrame}
+                         scrollHeight={getSize().windowH-190}
                 >
                     <ViewForm editData={this.state.formInitData}/>
-                </NHContainerFrame> */}
+                </NHContainerFrame>
             </div>
         );
     }

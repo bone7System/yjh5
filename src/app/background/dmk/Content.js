@@ -217,7 +217,7 @@ export default class RightContent extends Component {
     render() {
         //表单数据操作
         let columns = [
-            { title: '序号', dataIndex: 'ROW_ID', width: '50px' },
+            { title: '序号', dataIndex: 'rn', width: '50px' },
             {
                 title: '代码',
                 key: 'dm',
