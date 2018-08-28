@@ -31,13 +31,13 @@ class EditInitForm extends React.Component {
                 <NHFormItem id={'splxdm'} label={"商品类型"} form={form} required={true} initialValue={editData?editData.splxdm:undefined} >
                   <NHSelect sign={'dmk_splx'}/>
                 </NHFormItem>
-                <NHFormItem id={'sppp'} label={"商品品牌"} form={form} required={true} initialValue={editData?editData.sppp:undefined} >
+                <NHFormItem id={'sppp'} label={"商品品牌"} form={form}  initialValue={editData?editData.sppp:undefined} >
                     <Input />
                 </NHFormItem>
-                <NHFormItem id={'gg'} label={"规格"} form={form} required={true} initialValue={editData?editData.gg:undefined} >
+                <NHFormItem id={'gg'} label={"规格"} form={form}  initialValue={editData?editData.gg:undefined} >
                     <Input />
                 </NHFormItem>
-                <NHFormItem id={'dj'} label={"等级"} form={form} required={true} initialValue={editData?editData.dj:undefined} >
+                <NHFormItem id={'dj'} label={"等级"} form={form}  initialValue={editData?editData.dj:undefined} >
                     <Input />
                 </NHFormItem>
                 <NHFormItem id={'dwdm'} label={"单位"} form={form} required={true} initialValue={editData?editData.dwdm:undefined} >
