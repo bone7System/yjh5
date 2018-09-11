@@ -1,10 +1,6 @@
+import 'isomorphic-fetch';
 import { Modal,message} from 'antd';
-// import React, { Component, PropTypes } from 'react'
-import {baseUrl} from './NHPrefixUrl';
-
-
-//请求默认路径
-const pathUrl = baseUrl;
+import {getLoginUser} from './NHCore';
 
 const hasClass = (node,className)=> {
     let exist=false;
@@ -98,15 +94,14 @@ const columnNotNullTip = (res) => {
     }
 }
 
-const NHFetch =  (pUrl,pMethod,params) => {
+const NHFetch =  (pUrl,pMethod,params,errorFunc) => {
     let opts = {};
     let tmpHeader = "";
     let url = pUrl;
     let method = "";
 
-
-    if(!url.startsWith("api/") && !url.startsWith("http")){
-        url=pathUrl+url;
+    if(url.startsWith("/")){
+        url='api'+url;
     }
 
     //默认的请求方式是POST
@@ -117,7 +112,7 @@ const NHFetch =  (pUrl,pMethod,params) => {
     }
 
     if(method.toLowerCase()==='get'){//如果是get方式，则把参数拼凑到url路径上面
-        if(params !== undefined && params !==""){
+        if(params !== undefined && params !== ""){
             //如果params是Map对象，则需要先转换成字符串
             if((typeof params)==='string'){
                 url = url+"?"+params;
@@ -140,7 +135,7 @@ const NHFetch =  (pUrl,pMethod,params) => {
     }else{//除了get，所有方法改为post
         method = "POST";
         tmpHeader = "application/json;charset=UTF-8";
-        if(params !== undefined && params !==""){
+        if(params !== undefined && params !== ""){
             opts.body = JSON.stringify(params);
         }
     }
@@ -152,6 +147,11 @@ const NHFetch =  (pUrl,pMethod,params) => {
     if (token){
         opts.headers.Authorization=token;
     }
+    const nodeEnv = process.env.NODE_ENV || 'development';
+    if(nodeEnv==='development'){
+        opts.headers.loginUserId=getLoginUser().userId;
+    }
+
     opts.credentials='include';
     if (pMethod==='nbpost'){
         return fetch(url, opts)
@@ -171,16 +171,43 @@ const NHFetch =  (pUrl,pMethod,params) => {
         })
     }else{
         return fetch(url, opts)
-        .then((response) => response.json())
+        .then((response) => {
+           if(response.status === 200){
+                return response.json()
+            }else if(response.status === 302){
+                message.error("未登录或登录已过期,请刷新页面重新登录！");
+                sessionStorage.removeItem("userLogin");
+                sessionStorage.removeItem("access_token");
+            }else if(response.status === 401){
+                message.error("您正在尝试访问未授权的功能!");
+            }else{
+                //如果存在错误的回调方法，则调用回调方法，否则提示网络请求异常
+                if(errorFunc){
+                  errorFunc();
+              }else{
+                  Modal.error({ title: '错误提示', content: '网络请求异常,请联系管理员'});
+              }
+            }
+            return undefined;
+       })
         .then((res) => {
-            //判断是否没有权限
-            if((res.meta && res.meta.statusCode===401) || res.code===302){
+            if(res === undefined){
+              return undefined;
+            }else if((res.meta && res.meta.statusCode===401) || res.code===302){
+                //判断是否没有权限
                 message.error("您正在尝试访问未授权的功能!");
                 return undefined;
-            }else if(res.code && res.code !==200 ){//判断出现的问题
+            }else if(res.meta && res.meta.statusCode===500){
+                Modal.error({ title: '错误提示', content:'系统出现异常，请联系管理员！'});
+                return undefined;
+            }else if(res && res.code && res.code !==200 ){//判断出现的问题
                 let msg=res.message;
-                if(msg.startsWith("businessLogicError[")){//自定义的错误提示
+                if(msg.startsWith("businessLogicError[")){//自定义的提示（错误）
                     Modal.error({ title: '错误提示', content: res.message.substring(19,res.message.length-1),});
+                }else if(msg.startsWith("businessLogicWarm[")){//自定义的提示（警告）
+                    Modal.warning({ title: '警告提示', content: res.message.substring(19,res.message.length-1),});
+                }else if(msg.startsWith("businessLogicInfo[")){//自定义的提示（消息）
+                    Modal.info({ title: '消息提示', content: res.message.substring(19,res.message.length-1),});
                 }else if(msg.startsWith("onlyDataError[")){//数据唯一性异常
                     onlyDataErrorTip(res);
                 }else if(msg.startsWith("dataToLongError[")){//数据太长
@@ -191,9 +218,18 @@ const NHFetch =  (pUrl,pMethod,params) => {
                     Modal.error({ title: '错误提示', content:'系统出现异常，请联系管理员！'});
                 }
                 return undefined;
+           }else if(res.status && res.status===404){
+                Modal.error({ title: '错误提示', content:'系统出现异常，请联系管理员！'});
+                return undefined;
+            }else if(res && res.code && res.code ===200 ){//返回的是正确的结果,公司通用放回格式
+                return res;
+            }else if(res && res.meta && res.meta.statusCode===200){//返回的是正确的结果，四部返回格式
+                return res;
+            }else{//剩下的情况都是有错误
+                Modal.error({ title: '错误提示', content:'系统出现异常，请联系管理员！'});
             }
-            //在此处统一对后台抛出来的异常进行处理
-            return res;
+          //在此处统一对后台抛出来的异常进行处理
+          return undefined;
         })
         .catch((error) => {
             if(error.status===302){
@@ -201,12 +237,11 @@ const NHFetch =  (pUrl,pMethod,params) => {
                 sessionStorage.removeItem("userLogin");
                 sessionStorage.removeItem("access_token");
             }else{
-                Modal.error({ title: '网络请求异常,请联系管理员', content: error.message});
+                Modal.error({ title: '错误提示', content: '网络请求异常,请联系管理员'});
             }
             return error;
         })
     }
-    
 
 }
 

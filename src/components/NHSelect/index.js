@@ -61,7 +61,7 @@ class NHSelect extends React.Component {
     //加载远程数据
     loadRemoteData = (sign,url) => {
         let toUrl=url?url:pathUrl;
-        NHFetch(toUrl, 'GET', { sign: sign })
+        NHFetch(toUrl, 'POST', { sign: sign ,params:this.props.params,sqlParams:this.props.sqlParams})
             .then(res => {
                 if (res) {
                     this.parseData(res.data);
@@ -214,6 +214,8 @@ NHSelect.propTypes = {
     }), //要过滤掉的Key值
     onSelect: PropTypes.func,//下拉选项选中时回调
     onChange: PropTypes.func,//下拉框值变化时回调
+    params: PropTypes.object, //过滤条件
+    sqlParams: PropTypes.object //sql语句内的过滤参数
 }
 
 

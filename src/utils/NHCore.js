@@ -1,20 +1,22 @@
 import {allMenus} from './menu';
 
 /**
- * 获取登陆用户信息 
+ * 获取登陆用户信息
  * {
  *  userId:'admin', //登录账号
  *  userType:'owner', //用户类型，background:后台维护人员 ,owner：业主，business：商家
  *  userName:'管理员', //用户名
  * }
- * 
+ *
  */
 export const getLoginUser = () => {
     let loginUser = sessionStorage.getItem('userLogin') ? JSON.parse(sessionStorage.getItem('userLogin')) : {};
     loginUser = {
         userId:'admin',
         userType:'background',
-        userName:'管理员'
+        userName:'管理员',
+        client:'1001',
+        clientPath:'/1'
     }
     loginUser.menus=allMenus[loginUser.userType];
     return loginUser;
@@ -74,8 +76,8 @@ function SuitHeight(node){
 
 /**
  * 获取对象的样式的值
- * @param {*} element 
- * @param {*} attr 
+ * @param {*} element
+ * @param {*} attr
  */
 export const getStyle = (element, attr) => {
     return getDomStyle(element, attr);

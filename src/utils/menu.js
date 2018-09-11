@@ -18,7 +18,19 @@ export const allMenus={
           key:'backgroundDmk',
           name:'代码库管理',
           icon: 'file-text',
-      },
+       },
+       {
+          url:'/background/menu',
+          key:'backgroundMenu',
+          name:'菜单管理',
+          icon: 'file-text',
+        },
+        {
+          url:'/background/dept',
+          key:'backgroundDept',
+          name:'部门管理',
+          icon: 'file-text',
+       },
         {
           url:'/page/business/order',
           key:'businessOrder',
