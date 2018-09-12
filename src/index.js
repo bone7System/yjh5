@@ -10,6 +10,9 @@ const app = dva();
 // 3. Model
 // app.model(require('./models/example').default);
 
+sessionStorage.removeItem("userLogin");
+sessionStorage.removeItem("access_token");
+
 // 4. Router
 app.router(require('./router').default);
 

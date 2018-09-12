@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox  } from 'antd'
-// import {userLogin} from './login.js';
+import {userLogin} from './login.js';
 import styles from './index.css'
 const FormItem = Form.Item
 
@@ -16,7 +16,7 @@ class LoginPage extends React.Component {
     }
 
     UNSAFE_componentWillMount () {
-       
+
     }
 
     /**
@@ -24,17 +24,17 @@ class LoginPage extends React.Component {
      */
     handleAccountSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields(['username','password'], { force: true },
+        this.props.form.validateFields(['userName','passWord'], { force: true },
             (err, values) => {
                 if (!err) {
                     this.setState({
                         loading:true
                     });
-                    // userLogin(values,()=> {
-                    //     this.setState({
-                    //         loading:false
-                    //     });
-                    // });
+                    userLogin(values,()=> {
+                        this.setState({
+                            loading:false
+                        });
+                    });
                 }else{
 
                 }
@@ -50,19 +50,19 @@ class LoginPage extends React.Component {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <header style={{ marginBottom: 70, textAlign: 'center' }}>
-                        
+
                     </header>
                     <div className={styles.main}>
                         <Form onSubmit={this.handleAccountSubmit}>
                             <FormItem>
-                                {getFieldDecorator('username', {
+                                {getFieldDecorator('userName', {
                                     rules: [{ required: true, message: '请输入您的账号！' }],
                                 })(
                                     <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
                                 )}
                             </FormItem>
                             <FormItem>
-                                {getFieldDecorator('password', {
+                                {getFieldDecorator('passWord', {
                                     rules: [{ required: true, message: '请输入密码！' }],
                                 })(
                                     <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
@@ -84,8 +84,8 @@ class LoginPage extends React.Component {
                         </Form>
                     </div>
                 </div>
-                <div style={{margin:'48px 0 24px'}}> 
-                    
+                <div style={{margin:'48px 0 24px'}}>
+
                 </div>
             </div>
         )

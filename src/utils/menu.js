@@ -26,6 +26,12 @@ export const allMenus={
           icon: 'file-text',
         },
         {
+          url:'/background/permission',
+          key:'backgroundPermission',
+          name:'权限管理',
+          icon: 'file-text',
+        },
+        {
           url:'/background/dept',
           key:'backgroundDept',
           name:'部门管理',

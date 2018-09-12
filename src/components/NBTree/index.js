@@ -382,7 +382,6 @@ export default class NBTree extends React.Component {
 
     //右击事件
     onRightClick = (e) => {
-        console.info(e.node.props.dataRef);
         //先过滤没有权限的菜单
         let rightMenuList = this.props.buttons;
         if (rightMenuList && rightMenuList.length > 0) {

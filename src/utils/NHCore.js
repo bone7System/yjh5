@@ -11,14 +11,14 @@ import {allMenus} from './menu';
  */
 export const getLoginUser = () => {
     let loginUser = sessionStorage.getItem('userLogin') ? JSON.parse(sessionStorage.getItem('userLogin')) : {};
-    loginUser = {
-        userId:'admin',
-        userType:'background',
-        userName:'管理员',
-        client:'1001',
-        clientPath:'/1'
-    }
-    loginUser.menus=allMenus[loginUser.userType];
+    // loginUser = {
+    //     userId:'admin',
+    //     userType:'background',
+    //     userName:'管理员',
+    //     client:'1001',
+    //     clientPath:'/1'
+    // }
+    // loginUser.menus=allMenus[loginUser.userType];
     return loginUser;
 }
 

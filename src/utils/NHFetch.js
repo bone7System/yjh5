@@ -145,7 +145,7 @@ const NHFetch =  (pUrl,pMethod,params,errorFunc) => {
 
     let token=window.sessionStorage.getItem("access_token");
     if (token){
-        opts.headers.Authorization=token;
+        opts.headers['x-auth-token']=token;
     }
     const nodeEnv = process.env.NODE_ENV || 'development';
     if(nodeEnv==='development'){
