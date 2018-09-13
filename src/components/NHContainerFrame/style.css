@@ -1,28 +1,17 @@
-.content_t {
-    padding-bottom: 16px;
+.xgui_containerFrame_content_t {
+  padding-bottom: 16px;
+}
+.xgui_containerFrame_title{
+  line-height: 32px;
+  font-size: 18px;
+  color: #272747;
+}
+.xgui_containerFrame_description{
+  margin-top: 14px;
+  font-size: 14px;
+  color: #8f8f8f;
 }
 
-.content_t_r {
-    padding-right: 16px;
-}
-
-.title {
-    line-height: 32px;
-    font-size: 18px;
-    text-indent: 16px;
-    color: #272747;
-}
-
-.description {
-    height: 14px;
-    margin-top: 14px;
-    line-height: 14px;
-    font-size: 14px;
-    text-indent: 16px;
-    color: #8f8f8f;
-}
-
-.content_c {
-    background-color: "#fff";
-    padding: 16px;
+.xgui_containerFrame_content_c {
+  background-color: "#fff";
 }

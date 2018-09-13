@@ -36,13 +36,13 @@ class EditInitForm extends React.Component {
                 <NHFormItem id={'url'} label={"访问地址"} form={form} required={true} initialValue={editData?editData.url:undefined} >
                     <Input />
                 </NHFormItem>
-                <NHFormItem id={'icon'} label={"图标"} form={form} required={true} initialValue={editData?editData.icon:undefined} >
+                <NHFormItem id={'icon'} label={"图标"} form={form} initialValue={editData?editData.icon:undefined} >
                     <Input />
                 </NHFormItem>
-                <NHFormItem id={'isDirectory'} label={"枝叶"} form={form} required={true} initialValue={editData?editData.isDirectory:'1'}>
+                <NHFormItem id={'isDirectory'} label={"枝叶"} form={form} required={true} initialValue={editData?editData.isDirectory:1}>
                     <RadioGroup >
-                        <Radio value={'1'}>叶</Radio>
-                        <Radio value={'0'}>枝</Radio>
+                        <Radio value={1}>叶</Radio>
+                        <Radio value={0}>枝</Radio>
                     </RadioGroup>
                 </NHFormItem>
                 <NHFormItem id={'parentId'} label={"父节点"} form={form} initialValue={editData?editData.parentId:undefined}>
@@ -50,12 +50,6 @@ class EditInitForm extends React.Component {
                 </NHFormItem>
                 <NHFormItem id={'sort'} label={"排序码"} form={form} required={true} initialValue={editData?editData.sort:1}>
                     <InputNumber min={1} max={100}/>
-                </NHFormItem>
-                <NHFormItem id={'status'} label={"状态"} form={form} required={true} initialValue={editData?editData.status:'1'}>
-                    <RadioGroup >
-                        <Radio value={'1'}>启用</Radio>
-                        <Radio value={'0'}>禁用</Radio>
-                    </RadioGroup>
                 </NHFormItem>
             </Form>
         );

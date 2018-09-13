@@ -66,7 +66,7 @@ class InlayTable extends React.Component {
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
         let id = record.id;
-        NHFetch('/menu/get', 'GET')
+        NHFetch('/menu/getById', 'GET',{id:id})
             .then(res => {
                 if(res){
                     this.setState({formInitData: res.data});
@@ -89,24 +89,24 @@ class InlayTable extends React.Component {
     //单行删除
     handleSingleDeleteBtnClick = (record) => {
        NHConfirm("是否确定删除这条数据？",() => {
-           let pkid = record.id;
-           this.handleDelete([pkid]);
+           let id = record.id;
+           this.handleDelete(id);
        },"warn");
     }
     //多行删除
-    handleMultiDeleteBtnClick = () => {
-        let selectedRowKeys = this.refs.nhTable.state.selectedRowKeys;
-        if(selectedRowKeys && selectedRowKeys.length>0){
-            NHConfirm("是否确定删除选中的多条数据？",() => {
-                this.handleDelete(selectedRowKeys);
-            },"warn");
-        }else{
-            message.warning("请先选择需要删除的数据！");
-        }
-    }
+    // handleMultiDeleteBtnClick = () => {
+    //     let selectedRowKeys = this.refs.nhTable.state.selectedRowKeys;
+    //     if(selectedRowKeys && selectedRowKeys.length>0){
+    //         NHConfirm("是否确定删除选中的多条数据？",() => {
+    //             this.handleDelete(selectedRowKeys);
+    //         },"warn");
+    //     }else{
+    //         message.warning("请先选择需要删除的数据！");
+    //     }
+    // }
     //删除操作
-    handleDelete = (pkids) => {
-        NHFetch('/demo/simpleTable/deleteByMulti' , 'POST' , pkids)
+    handleDelete = (id) => {
+        NHFetch('/menu/delete' , 'POST' , {id:id})
             .then(res => {
                 if (res) {
                     message.success("删除操作成功！");
@@ -171,14 +171,7 @@ class InlayTable extends React.Component {
                 return <font>叶</font>;
               }
             },sorted:false},
-            {title: '排序码',minWidth: '60px',dataIndex: 'sort',sorted:false},
-            {title: '状态',minWidth: '60px',dataIndex: 'status',render:(text,record) => {
-              if(record.status===1){
-                return <font color={'green'}>启用</font>;
-              }else{
-                return <font color={'red'}>禁用</font>;
-              }
-            },sorted:false},
+            {title: '排序',minWidth: '60px',dataIndex: 'sort',sorted:false}
         ];
         //行内操作
         const action = [
@@ -196,7 +189,7 @@ class InlayTable extends React.Component {
                              rowSelectionChange={this.rowSelectionChange}
                     >
                       <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
-                      <Button type="danger" ghost onClick={this.handleMultiDeleteBtnClick} style={{ marginRight: 10,display:this.state.showOperationBtn?undefined:'none' }} >删除</Button>
+                      {/* <Button type="danger" ghost onClick={this.handleMultiDeleteBtnClick} style={{ marginRight: 10,display:this.state.showOperationBtn?undefined:'none' }} >删除</Button> */}
                     </NHTable>
                 </div>
                 <NHContainerFrame ref="nhAddModal"
