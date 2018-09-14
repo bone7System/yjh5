@@ -4,21 +4,6 @@ import PropTypes from 'prop-types';
 import NHFetch from '../../utils/NHFetch';
 const Option = Select.Option;
 
-/**
- * 多选下拉选择器
- * 1、符合自定义表单组件规范，结合FormItem使用时不会出现警告信息
- * 2、代码结构优化
- * 3、使用sign属性时，后台对应sign标识的sql查询语句列必须以value、label作为别名
- * Author: zengxiangkai@ly-sky.com
- * Created on: 2018-03-13 15:54:13
- * Version: 1.3
- * Modify log:
- * 2018-04-25
- *     1、新增filterData属性，该属性可以过滤（或保留）指定keys值项
- *     2、新增dataSource属性，允许使用固定的数据源构造下拉数据，数据源格式为[{value:'value',label:'label'},{},...]
- * 2018-06-04
- *     1、解决sign为空或空字符串的时候，请求后台数据源报错问题
- */
 class NHMultiSelect extends React.Component {
 
     constructor(props) {

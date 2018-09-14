@@ -112,38 +112,6 @@ class EditInitForm extends React.Component {
             }
         });
     }
-        // if (this.state.isUpdate) {
-        //     NHFetch( 'update', 'POST', formData)
-        //         .then(res => {
-        //             if (res) {
-        //                 if (res.data == 1) {
-        //                     this.setState({isSuccess: true});
-        //                 }
-        //                 this.next();
-        //             }
-        //         });
-        // } else {
-        //     NHFetch( 'insert', 'POST', formData)
-        //         .then(res => {
-        //             if (res) {
-        //                 if (res.data == 1) {
-        //                     this.setState({isSuccess: true});
-        //                 }
-        //                 this.next();
-        //             }
-        //         });
-        // }
-
-    //是否继续添加（重新配置）
-    // handleReset = () => {
-    //     this.setState({
-    //         isUpdate: false, //是否是更新操作
-    //         current: 0, //当前步骤
-    //         lcxxData: {}, //配置的流程信息
-    //         hjxxData: [], //配置的环节信息
-    //         isSuccess: false, //是否配置成功
-    //     });
-    // }
 
     //步骤一内容
     getFirstContent() {

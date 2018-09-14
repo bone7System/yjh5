@@ -120,45 +120,6 @@ class Role extends React.Component {
                 }
             })
     }
-    //新增面板保存方法
-    // handleSaveAdd = (stopLoading) => {
-    //     this.refs.nhAddForm.validateFields((err, formData) => {
-    //         if (err) {
-    //           stopLoading();
-    //             return;
-    //         }
-    //         NHFetch('/permisstion/add' , 'POST' , formData)
-    //             .then(res => {
-    //                 stopLoading();
-    //                 if (res) {
-    //                     message.success("新增权限信息成功！");
-    //                     this.setCurrentPageShow('tableFlag');
-    //                     this.refs.nhTable.filterTableData();
-    //                 }
-    //             })
-    //             .catch(() => { stopLoading(); })
-    //     });
-    // }
-    //修改面板保存方法
-    // handleSaveUpdate = (stopLoading) => {
-    //     this.refs.nhUpdateForm.validateFields((err, formData) => {
-    //         if (err) {
-    //           stopLoading();
-    //             return;
-    //         }
-    //         formData.id = this.state.formInitData.id;
-    //         NHFetch('/permisstion/update' , 'POST' , formData)
-    //             .then(res => {
-    //                 stopLoading();
-    //                 if (res) {
-    //                     message.success("修改权限信息成功！");
-    //                     this.setCurrentPageShow('tableFlag');
-    //                     this.refs.nhTable.filterTableData();
-    //                 }
-    //             })
-    //             .catch(() => { stopLoading(); })
-    //     });
-    // }
 
     render() {
         //列参数

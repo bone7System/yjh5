@@ -5,13 +5,6 @@ import NHMultiSelect from '../../../../components/NHMultiSelect';
 import PropTypes from 'prop-types';
 
 
-/**
- * 步骤二配置环节信息
- * Author: zengxiangkai@ly-sky.com
- * Created on: 2018-03-08 11:18:31
- * Version: 1.0
- * Modify log:
- */
 class SeconedStep extends React.Component {
 
     constructor(props) {
