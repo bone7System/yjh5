@@ -55,10 +55,6 @@ class Permission extends React.Component {
         })
     }
 
-    //导出Excel文件
-    handleExportBtnClick = () => {
-        this.refs.nhTable.exportExcel("导出基础数据");
-    }
     //新增按钮点击事件
     handleAddBtnClick = () => {
         this.setCurrentPageShow('addFlag');

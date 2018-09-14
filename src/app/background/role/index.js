@@ -1,22 +1,23 @@
 import React from "react";
-import {message,Button,Icon} from 'antd';
+import {message,Button} from 'antd';
 import NHContainerFrame from '../../../components/NHContainerFrame';
 import NHTable from '../../../components/NHTable';
 import NHConfirm from '../../../components/NHConfirm';
 import getSize from '../../../utils/getSize';
 import NHFetch from '../../../utils/NHFetch';
-import EditForm from './EditForm.js';
+import EditForm from './editRole/EditForm.js';
+import {getLoginUser} from '../../../utils/NHCore';
 import css from './index.css';
 
 
 /**
- * 权限信息列表
+ * 角色信息列表
  * @author yizhiqiang
  * @Email yizhiqiang@ly-sky.com
  * @date 2018-08-03 14:00
  * Version: 1.0
  */
-class Permission extends React.Component {
+class Role extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,10 +56,6 @@ class Permission extends React.Component {
         })
     }
 
-    //导出Excel文件
-    handleExportBtnClick = () => {
-        this.refs.nhTable.exportExcel("导出基础数据");
-    }
     //新增按钮点击事件
     handleAddBtnClick = () => {
         this.setCurrentPageShow('addFlag');
@@ -115,70 +112,70 @@ class Permission extends React.Component {
             })
     }
     //新增面板保存方法
-    handleSaveAdd = (stopLoading) => {
-        this.refs.nhAddForm.validateFields((err, formData) => {
-            if (err) {
-              stopLoading();
-                return;
-            }
-            NHFetch('/permisstion/add' , 'POST' , formData)
-                .then(res => {
-                    stopLoading();
-                    if (res) {
-                        message.success("新增权限信息成功！");
-                        this.setCurrentPageShow('tableFlag');
-                        this.refs.nhTable.filterTableData();
-                    }
-                })
-                .catch(() => { stopLoading(); })
-        });
-    }
+    // handleSaveAdd = (stopLoading) => {
+    //     this.refs.nhAddForm.validateFields((err, formData) => {
+    //         if (err) {
+    //           stopLoading();
+    //             return;
+    //         }
+    //         NHFetch('/permisstion/add' , 'POST' , formData)
+    //             .then(res => {
+    //                 stopLoading();
+    //                 if (res) {
+    //                     message.success("新增权限信息成功！");
+    //                     this.setCurrentPageShow('tableFlag');
+    //                     this.refs.nhTable.filterTableData();
+    //                 }
+    //             })
+    //             .catch(() => { stopLoading(); })
+    //     });
+    // }
     //修改面板保存方法
-    handleSaveUpdate = (stopLoading) => {
-        this.refs.nhUpdateForm.validateFields((err, formData) => {
-            if (err) {
-              stopLoading();
-                return;
-            }
-            formData.id = this.state.formInitData.id;
-            NHFetch('/permisstion/update' , 'POST' , formData)
-                .then(res => {
-                    stopLoading();
-                    if (res) {
-                        message.success("修改权限信息成功！");
-                        this.setCurrentPageShow('tableFlag');
-                        this.refs.nhTable.filterTableData();
-                    }
-                })
-                .catch(() => { stopLoading(); })
-        });
-    }
+    // handleSaveUpdate = (stopLoading) => {
+    //     this.refs.nhUpdateForm.validateFields((err, formData) => {
+    //         if (err) {
+    //           stopLoading();
+    //             return;
+    //         }
+    //         formData.id = this.state.formInitData.id;
+    //         NHFetch('/permisstion/update' , 'POST' , formData)
+    //             .then(res => {
+    //                 stopLoading();
+    //                 if (res) {
+    //                     message.success("修改权限信息成功！");
+    //                     this.setCurrentPageShow('tableFlag');
+    //                     this.refs.nhTable.filterTableData();
+    //                 }
+    //             })
+    //             .catch(() => { stopLoading(); })
+    //     });
+    // }
 
     render() {
         //列参数
         const columns = [
-            {title: '序号',width: '60px',dataIndex: 'rn'},
-            {title: '权限',width: '160px',dataIndex: 'permission',sorted:false},
-            {title: '描述',minWidth: '240px',dataIndex: 'description',sorted:false},
-            {title: '所属菜单',width: '120px',dataIndex: 'menuTitle',sorted:false},
-            {title: '父权限',width: '100px',dataIndex: 'parentPermission',sorted:false},
-            {title: '路径',minWidth: '150px',dataIndex: 'path',sorted:false},
-            {title: '创建时间',width: '120px',dataIndex: 'createTime',sorted:false},
-            {title: '创建人',width: '120px',dataIndex: 'createUser',sorted:false},
+          {title: '序号',width: '60px',dataIndex: 'rn'},
+          {title: '角色',width: '120px',dataIndex: 'roleName',sorted:false},
+          {title: '描述',minWidth: '180px',dataIndex: 'description',sorted:false},
+          {title: '权限',minWidth: '240px',dataIndex: 'permission',sorted:false},
+          {title: '创建时间',width: '140px',dataIndex: 'createTime',sorted:false},
+          {title: '创建人',width: '100px',dataIndex: 'createName',sorted:false},
         ];
         //行内操作
         const action = [
             {title:'修改',onClick:this.handleUpdateBtnClick},
             {title:'删除',onClick:this.handleSingleDeleteBtnClick}
         ];
+        let sqlParams={client:getLoginUser().client+""}
         return (
             <div className={css.main_right_content} style={{height:getSize().contentH-16}}>
                 <div className={css.table} style={{display:this.state.frameVisibleMap.tableFlag?'block':'none'}}>
                     <NHTable ref='nhTable'
                              rowKey={record =>record.id}
-                             sign={"yj_erp_permission"}
+                             sign={"yj_erp_role"}
                              columns={columns}
                              action={action}
+                             sqlParams={sqlParams}
                              rowSelectionChange={this.rowSelectionChange}
                     >
                       <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
@@ -186,23 +183,23 @@ class Permission extends React.Component {
                     </NHTable>
                 </div>
                 <NHContainerFrame ref="nhAddModal"
-                         title="新增基础数据信息"
+                         title="新增角色信息"
                          visible={this.state.frameVisibleMap.addFlag}
-                         onOk={this.handleSaveAdd}
+                         onOk={null}
                          onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhAddForm"/>
+                    <EditForm ref="nhAddForm"  isUpdate={false}/>
                 </NHContainerFrame>
                 <NHContainerFrame ref="nhUpdateModal"
-                         title="修改基础数据信息"
+                         title="修改角色信息"
                          visible={this.state.frameVisibleMap.updateFlag}
-                         onOk={this.handleSaveUpdate}
+                         onOk={null}
                          onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhUpdateForm" editData={this.state.formInitData}/>
+                    <EditForm ref="nhUpdateForm" isUpdate={true} editData={this.state.formInitData}/>
                 </NHContainerFrame>
             </div>
         );
     }
 }
-export default Permission;
+export default Role;

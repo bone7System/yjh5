@@ -1,0 +1,58 @@
+
+/*右侧主内容div样式*/
+.main_right_content{
+    margin: 12px 12px 0 12px;
+    padding: 16px;
+    background: #fff;
+    minHeight: 280;
+    overflow: hidden;
+}
+
+/*表格部分样式*/
+.main_right_content .table {
+    width: 100%;
+    height: 100%;
+}
+
+/*新增页面表单步骤条样式*/
+.steps-content {
+    margin-top: 24px;
+    min-height: 200px;
+    padding: 24px 0;
+}
+
+/*新增页面表单步骤条操作栏样式*/
+.steps-action {
+    margin-top: 24px;
+    text-align: center;
+}
+
+/*流程提示文字*/
+.steps-description {
+    margin-top: 24px;
+}
+
+/*流程配置表格操作栏样式*/
+.editable-row-operations a {
+    margin-right: 8px;
+}
+
+/*新增、修改成功图标颜色*/
+.finish-circle-success {
+    font-size: 64px;
+    color: #53c41a;
+}
+/*新增、修改失败图标颜色*/
+.finish-circle-failed {
+    font-size: 64px;
+    color: #ff4d4f;
+}
+/*新增、修改完成文字提示*/
+.finish-tip-title {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.nomargin_nhformitem div{
+    margin-bottom: 0;
+}

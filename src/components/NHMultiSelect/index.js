@@ -59,7 +59,7 @@ class NHMultiSelect extends React.Component {
 
     //加载远程数据
     loadRemoteData = (sign) => {
-        NHFetch("/proData/selectDataList", 'GET', { sign: sign })
+        NHFetch("/proData/selectDataList", 'POST', { sign: sign ,params:this.props.params,sqlParams:this.props.sqlParams})
             .then(res => {
                 if (res) {
                     this.parseData(res.data);
@@ -219,17 +219,17 @@ NHMultiSelect.defaultProps = {
 //属性检查
 NHMultiSelect.propTypes = {
     sign: PropTypes.string, //数据源标识
-    dataSource: PropTypes.arrayOf(
-        PropTypes.shape({
-            value: PropTypes.string,
-            label: PropTypes.node
-        })
-    ), //本地数据源
+    // dataSource: PropTypes.arrayOf(
+    //     PropTypes.shape({
+    //         value: PropTypes.object,
+    //         label: PropTypes.node
+    //     })
+    // ), //本地数据源
     style: PropTypes.object, //样式
     placeholder: PropTypes.string, //下拉提示
     disabled: PropTypes.bool, //是否禁用
-    defaultValue: PropTypes.arrayOf(PropTypes.string), //默认值
-    value: PropTypes.arrayOf(PropTypes.string), //初始值
+    // defaultValue: PropTypes.arrayOf(PropTypes.object), //默认值
+    // value: PropTypes.arrayOf(PropTypes.object), //初始值
     filterData: PropTypes.shape({
         type: PropTypes.oneOf(['remove', 'save']), //是保留还是过滤掉
         filterkeys: PropTypes.array //保留或过滤的key值
@@ -237,6 +237,8 @@ NHMultiSelect.propTypes = {
     onSelect: PropTypes.func,//下拉选项选中时回调
     onChange: PropTypes.func,//多选框值变化时回调
     onDeselect: PropTypes.func,//多选框值删除时回调
+    params: PropTypes.object, //过滤条件
+    sqlParams: PropTypes.object //sql语句内的过滤参数
 }
 
 export default NHMultiSelect;
