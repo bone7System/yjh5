@@ -48,6 +48,7 @@ class Role extends React.Component {
     //面板关闭按钮点击事件
     handleCloseFrame = () => {
         this.setCurrentPageShow('tableFlag');
+        this.refs.nhTable.readTableData();
     }
     //选择行后显示删除操作按钮
     rowSelectionChange = (selectedRowKeys) => {
@@ -63,13 +64,32 @@ class Role extends React.Component {
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
         let id = record.id;
-        NHFetch('/menu/get', 'GET')
-            .then(res => {
-                if(res){
-                    this.setState({formInitData: res.data});
-                    this.setCurrentPageShow('updateFlag');
+        NHFetch('/role/getById?id='+id, 'GET')
+        .then(res => {
+          if(res){
+            NHFetch('/role-permission/get?id='+id, 'GET')
+            .then(res1 => {
+                if(res1){
+                  let permissions=[];
+                  if(res1.data){
+                    res1.data.map((item) => {
+                      permissions.push(item.id);
+                      return;
+                    });
+                  }
+                  let roleInfo=res.data;
+                  if(roleInfo.parentId===-1){
+                    roleInfo.parentId=undefined;
+                  }
+                  this.setState({
+                    roleInfo: roleInfo,
+                    permissions: permissions
+                  });
+                  this.setCurrentPageShow('updateFlag');
                 }
             })
+          }
+        })
     }
     //查看按钮点击事件
     handleViewBtnClick = (record) => {
@@ -85,28 +105,17 @@ class Role extends React.Component {
 
     //单行删除
     handleSingleDeleteBtnClick = (record) => {
-       NHConfirm("是否确定删除这条数据？",() => {
+       NHConfirm("是否确定删除这个角色？",() => {
            let pkid = record.id;
-           this.handleDelete([pkid]);
+           this.handleDelete(pkid);
        },"warn");
     }
-    //多行删除
-    handleMultiDeleteBtnClick = () => {
-        let selectedRowKeys = this.refs.nhTable.state.selectedRowKeys;
-        if(selectedRowKeys && selectedRowKeys.length>0){
-            NHConfirm("是否确定删除选中的多条数据？",() => {
-                this.handleDelete(selectedRowKeys);
-            },"warn");
-        }else{
-            message.warning("请先选择需要删除的数据！");
-        }
-    }
     //删除操作
-    handleDelete = (pkids) => {
-        NHFetch('/demo/simpleTable/deleteByMulti' , 'POST' , pkids)
+    handleDelete = (id) => {
+        NHFetch('/role/role-delete' , 'POST' , {roleId:id})
             .then(res => {
                 if (res) {
-                    message.success("删除操作成功！");
+                    message.success("角色删除成功！");
                     this.refs.nhTable.filterTableData();
                 }
             })
@@ -179,7 +188,6 @@ class Role extends React.Component {
                              rowSelectionChange={this.rowSelectionChange}
                     >
                       <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
-                      <Button type="danger" ghost onClick={this.handleMultiDeleteBtnClick} style={{ marginRight: 10,display:this.state.showOperationBtn?undefined:'none' }} >删除</Button>
                     </NHTable>
                 </div>
                 <NHContainerFrame ref="nhAddModal"
@@ -196,7 +204,8 @@ class Role extends React.Component {
                          onOk={null}
                          onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhUpdateForm" isUpdate={true} editData={this.state.formInitData}/>
+                    <EditForm ref="nhUpdateForm" isUpdate={true}
+                      roleInfo={this.state.roleInfo} permissions={this.state.permissions}/>
                 </NHContainerFrame>
             </div>
         );

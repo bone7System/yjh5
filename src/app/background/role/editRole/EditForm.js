@@ -56,7 +56,7 @@ class EditInitForm extends React.Component {
               return;
           }
           if(this.props.isUpdate){
-
+            this.handleUpdate(this.state.roleInfo,permission);
           }else{
             this.handleSave(this.state.roleInfo,permission);
           }
@@ -87,8 +87,30 @@ class EditInitForm extends React.Component {
         });
     }
 
-    handleUpdate = (roleInfo,permissions) => {
-
+    handleUpdate = (roleInfo,permission) => {
+      roleInfo.client=getLoginUser().client;
+      if(!roleInfo.parentId){
+        roleInfo.parentId=-1;
+      }
+      roleInfo.id=this.props.roleInfo.id;
+      roleInfo.createTime=this.props.roleInfo.createTime;
+      this.setState({saveLoading:true});
+      NHFetch( '/role/update', 'POST', roleInfo)
+        .then(res => {
+          if (res) {
+              let params={
+                roleId:this.props.roleInfo.id,
+                permissions:permission.permissions
+              }
+              NHFetch( '/role-permission/save', 'POST',params)
+                .then(res => {
+                    if (res) {
+                      this.setState({isSuccess: true,saveLoading:false});
+                      this.next();
+                    }
+                });
+            }
+        });
     }
         // if (this.state.isUpdate) {
         //     NHFetch( 'update', 'POST', formData)
@@ -126,13 +148,13 @@ class EditInitForm extends React.Component {
     //步骤一内容
     getFirstContent() {
         return <FirstStep ref={(form) => this.firstStepForm = form}
-          initFormData={this.state.lcxxData}/>;
+          initFormData={this.props.roleInfo}/>;
     }
 
     //步骤二内容
     getSecondContent() {
         return <SeconedStep ref={(form) => this.seconedStepForm = form}
-          dta={this.state.hjxxData} />
+        initFormData={this.props.permissions} />
     }
 
     //最后一步内容

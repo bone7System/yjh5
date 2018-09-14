@@ -28,7 +28,7 @@ class SeconedStep extends React.Component {
                <div>
                   <Form layout="horizontal">
                       <NHFormItem id={'permissions'} label={'权限'} form={form} required={true}
-                                  initialValue={initFormData?initFormData.permissions:undefined}>
+                                  initialValue={initFormData?initFormData:undefined}>
                           <NHMultiSelect sign="yj_perssion" placeholder="请选择权限"/>
                       </NHFormItem>
                   </Form>
