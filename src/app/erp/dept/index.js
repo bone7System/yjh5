@@ -1,6 +1,7 @@
 import React from "react";
 import {message,Button} from 'antd';
 import NHContainerFrame from '../../../components/NHContainerFrame';
+import NHModal from '../../../components/NHModal';
 import NHTable from '../../../components/NHTable';
 import NHConfirm from '../../../components/NHConfirm';
 import getSize from '../../../utils/getSize';
@@ -10,13 +11,6 @@ import {getLoginUser} from '../../../utils/NHCore';
 import css from './index.css';
 
 
-/**
- * 权限信息列表
- * @author yizhiqiang
- * @Email yizhiqiang@ly-sky.com
- * @date 2018-08-03 14:00
- * Version: 1.0
- */
 class Permission extends React.Component {
     constructor(props) {
         super(props);
@@ -32,23 +26,23 @@ class Permission extends React.Component {
     }
 
     //设置当前页面显示
-    setCurrentPageShow = (showFlagName) => {
-        let frameVisibleMap=this.state.frameVisibleMap;
-        for(let name in frameVisibleMap){
-            if(name===showFlagName){
-                frameVisibleMap[name]=true;
-            }else{
-                frameVisibleMap[name]=false;
-            }
-        }
-        this.setState({
-            frameVisibleMap:frameVisibleMap
-        });
-    }
+    // setCurrentPageShow = (showFlagName) => {
+    //     let frameVisibleMap=this.state.frameVisibleMap;
+    //     for(let name in frameVisibleMap){
+    //         if(name===showFlagName){
+    //             frameVisibleMap[name]=true;
+    //         }else{
+    //             frameVisibleMap[name]=false;
+    //         }
+    //     }
+    //     this.setState({
+    //         frameVisibleMap:frameVisibleMap
+    //     });
+    // }
     //面板关闭按钮点击事件
-    handleCloseFrame = () => {
-        this.setCurrentPageShow('tableFlag');
-    }
+    // handleCloseFrame = () => {
+    //     this.setCurrentPageShow('tableFlag');
+    // }
     //选择行后显示删除操作按钮
     rowSelectionChange = (selectedRowKeys) => {
         this.setState({
@@ -56,24 +50,20 @@ class Permission extends React.Component {
         })
     }
 
-    //导出Excel文件
-    handleExportBtnClick = () => {
-        this.refs.nhTable.exportExcel("导出基础数据");
-    }
     //新增按钮点击事件
     handleAddBtnClick = () => {
-        this.setCurrentPageShow('addFlag');
+        // this.setCurrentPageShow('addFlag');
+        this.refs.nhAddModal.show();
     }
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
-        let id = record.id;
-        NHFetch('/menu/get', 'GET')
-            .then(res => {
-                if(res){
-                    this.setState({formInitData: res.data});
-                    this.setCurrentPageShow('updateFlag');
-                }
-            })
+        let formInitData = {
+          id:record.id,
+          deptName:record.deptName
+        }
+        this.setState({formInitData: formInitData});
+        // this.setCurrentPageShow('updateFlag');
+        this.refs.nhUpdateModal.show();
     }
     //查看按钮点击事件
     handleViewBtnClick = (record) => {
@@ -153,7 +143,7 @@ class Permission extends React.Component {
             {title: '部门名称',width: '160px',dataIndex: 'deptName',sorted:false},
             {title: '父级部门',minWidth: '240px',dataIndex: 'parentDeptName',sorted:false},
             {title: '创建时间',width: '120px',dataIndex: 'createTime',sorted:false},
-            {title: '创建人',width: '120px',dataIndex: 'createUser',sorted:false},
+            {title: '创建人',width: '120px',dataIndex: 'createName',sorted:false},
         ];
         //行内操作
         const action = [
@@ -177,22 +167,22 @@ class Permission extends React.Component {
                       <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
                     </NHTable>
                 </div>
-                <NHContainerFrame ref="nhAddModal"
+                <NHModal ref="nhAddModal"
                          title="新增部门信息"
                          visible={this.state.frameVisibleMap.addFlag}
                          onOk={this.handleSaveAdd}
                          onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhAddForm"/>
-                </NHContainerFrame>
-                <NHContainerFrame ref="nhUpdateModal"
+                    <EditForm ref="nhAddForm" isAdd={true}/>
+                </NHModal>
+                <NHModal ref="nhUpdateModal"
                          title="修改部门信息"
                          visible={this.state.frameVisibleMap.updateFlag}
                          onOk={this.handleSaveUpdate}
                          onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhUpdateForm" editData={this.state.formInitData}/>
-                </NHContainerFrame>
+                    <EditForm ref="nhUpdateForm" isAdd={false} editData={this.state.formInitData}/>
+                </NHModal>
             </div>
         );
     }

@@ -62,7 +62,7 @@ class Permission extends React.Component {
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
         let id = record.id;
-        NHFetch('/menu/get', 'GET')
+        NHFetch('/permisstion/getById', 'GET',{id:id})
             .then(res => {
                 if(res){
                     this.setState({formInitData: res.data});
@@ -73,7 +73,7 @@ class Permission extends React.Component {
     //查看按钮点击事件
     handleViewBtnClick = (record) => {
         let id = record.id;
-        NHFetch('/menu/get', 'GET')
+        NHFetch('/permisstion/getById', 'GET')
             .then(res => {
                 if(res){
                     this.setState({formInitData: res.data});
@@ -84,25 +84,15 @@ class Permission extends React.Component {
 
     //单行删除
     handleSingleDeleteBtnClick = (record) => {
-       NHConfirm("是否确定删除这条数据？",() => {
+       NHConfirm("是否确定删除这个权限？",() => {
            let pkid = record.id;
-           this.handleDelete([pkid]);
+           this.handleDelete(pkid);
        },"warn");
     }
-    //多行删除
-    handleMultiDeleteBtnClick = () => {
-        let selectedRowKeys = this.refs.nhTable.state.selectedRowKeys;
-        if(selectedRowKeys && selectedRowKeys.length>0){
-            NHConfirm("是否确定删除选中的多条数据？",() => {
-                this.handleDelete(selectedRowKeys);
-            },"warn");
-        }else{
-            message.warning("请先选择需要删除的数据！");
-        }
-    }
+
     //删除操作
-    handleDelete = (pkids) => {
-        NHFetch('/demo/simpleTable/deleteByMulti' , 'POST' , pkids)
+    handleDelete = (id) => {
+        NHFetch('/permisstion/delete' , 'POST' , {id:id})
             .then(res => {
                 if (res) {
                     message.success("删除操作成功！");
@@ -158,9 +148,8 @@ class Permission extends React.Component {
             {title: '描述',minWidth: '240px',dataIndex: 'description',sorted:false},
             {title: '所属菜单',width: '120px',dataIndex: 'menuTitle',sorted:false},
             {title: '父权限',width: '100px',dataIndex: 'parentPermission',sorted:false},
-            {title: '路径',minWidth: '150px',dataIndex: 'path',sorted:false},
             {title: '创建时间',width: '120px',dataIndex: 'createTime',sorted:false},
-            {title: '创建人',width: '120px',dataIndex: 'createUser',sorted:false},
+            {title: '创建人',width: '120px',dataIndex: 'createName',sorted:false},
         ];
         //行内操作
         const action = [

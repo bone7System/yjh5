@@ -149,7 +149,7 @@ class EditInitForm extends React.Component {
         }];
 
         return (
-            <div style={{paddingTop:'20px'}}>
+            <div >
                 <Row type="flex" justify="center">
                     <Col span={24}>
                         <Steps current={current}>

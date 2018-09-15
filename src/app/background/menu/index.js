@@ -9,13 +9,6 @@ import EditForm from './EditForm.js';
 import css from './index.css';
 
 
-/**
- * 基础信息列表
- * @author yizhiqiang
- * @Email yizhiqiang@ly-sky.com
- * @date 2018-08-03 14:00
- * Version: 1.0
- */
 class InlayTable extends React.Component {
     constructor(props) {
         super(props);
@@ -93,17 +86,6 @@ class InlayTable extends React.Component {
            this.handleDelete(id);
        },"warn");
     }
-    //多行删除
-    // handleMultiDeleteBtnClick = () => {
-    //     let selectedRowKeys = this.refs.nhTable.state.selectedRowKeys;
-    //     if(selectedRowKeys && selectedRowKeys.length>0){
-    //         NHConfirm("是否确定删除选中的多条数据？",() => {
-    //             this.handleDelete(selectedRowKeys);
-    //         },"warn");
-    //     }else{
-    //         message.warning("请先选择需要删除的数据！");
-    //     }
-    // }
     //删除操作
     handleDelete = (id) => {
         NHFetch('/menu/delete' , 'POST' , {id:id})

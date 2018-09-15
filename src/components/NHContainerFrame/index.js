@@ -112,7 +112,7 @@ class NHContainerFrame extends React.Component {
                                 <Col span={contentWidth}>
                                     <Row type="flex" justify="center">
                                         <Col span={24}>
-                                            <div>
+                                            <div style={{paddingTop:'20px'}}>
                                                 {this.props.children}
                                             </div>
                                         </Col>
@@ -176,7 +176,7 @@ class NHContainerFrame extends React.Component {
                                 <Col span={contentWidth}>
                                     <Row type="flex" justify="center">
                                         <Col span={24}>
-                                            <div>
+                                            <div style={{paddingTop:'20px'}}>
                                                 {this.props.children}
                                             </div>
                                         </Col>
