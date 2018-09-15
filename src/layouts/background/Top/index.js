@@ -23,24 +23,7 @@ export default class Home extends React.Component {
     }
 
     componentDidMount() {
-        let userLogin = getLoginUser();
-        //获取用户信息
-        // NHFetch(`api/zhxg-fwgl/fwgl/fwgl/${userLogin.userId}/getUserMsgByUserId`, 'get').then(res => {
-        //     let userSex = '1';
-        //     if (res && res.data) {
-        //         userSex = res.data.XBM;
-        //     }
-        //     this.setState({ userSex, username: userLogin.userName });
-        // })
-        //获取用户功能
-        // NHFetch(`api/zhxg-fwgl/fwgl/fwgl/${userLogin.userId}/getFwlbMsgByUserId`, 'get').then(res => {
-        //     let searchData = [];
-        //     if (res && res.data) {
-        //         searchData = res.data;
-        //         searchData = searchData.filter(item => hasAuth(`zhxg_fwgl_home:${item.wfwbz.toLowerCase()}`));
-        //     }
-        //     this.setState({ searchData });
-        // })
+
     }
 
 
@@ -61,15 +44,9 @@ export default class Home extends React.Component {
                 return;
             }
             let en_characters_pattern = new RegExp(RegularExpression.EN_NUMBER.rule.pattern);
-            const oldPassWord = values['oldPassWord'];
             const newPassWord = values['newPassWord'];
             const confirmPassWord = values['confirmPassWord'];
 
-            if (!en_characters_pattern.test(oldPassWord)) {
-                this.passWordForm.setFields({ oldPassWord: { errors: [new Error('请输入6-16位数字或字母。')] } });
-                stopLoading();
-                return;
-            }
             if (!en_characters_pattern.test(newPassWord)) {
                 this.passWordForm.setFields({ newPassWord: { errors: [new Error('请输入6-16位数字或字母。')] } });
                 stopLoading();
@@ -86,20 +63,22 @@ export default class Home extends React.Component {
                 stopLoading();
                 return;
             }
+            let user=getLoginUser();
             let params =
                 {
-                    oldPassword: oldPassWord,
-                    newPassword: newPassWord,
+                  passWord: newPassWord,
+                  passWord2: confirmPassWord,
+                  userName:user.userName,
+                  client:user.client
                 }
 
             //修改密码
-            NHFetch(`api/base/user/password/update`, 'post', params).then(res => {
-                if (res && res.meta['success']) {
+            NHFetch(`/user/update-password`, 'post', params).then(res => {
+                if (res) {
                     message.success("密码修改成功。");
                     this.passWordForm.resetFields();
                     this.refs.nhEditPassWordModal.close();
                 } else {
-                    console.log(res);
                     Modal.warn({
                         title: '密码修改反馈',
                         content: '异常：' + res.meta['message'],

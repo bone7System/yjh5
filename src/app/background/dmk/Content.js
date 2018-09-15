@@ -26,14 +26,14 @@ export default class RightContent extends Component {
     }
     //渲染前加载启用停用按钮参数
     componentDidMount() {
-        NHFetch("/proData/selectDataList", "GET", { sign: 'dmk_xtgl_zt' })
-            .then(resData => {
-                if (resData.data != null) {
-                    if (resData.data[0] != null && resData.data[1] != null && resData.data[0].VALUE == '1' && resData.data[1].VALUE == '0') {
-                        this.setState({ zt0: resData.data[1].LABEL, zt1: resData.data[0].LABEL });
-                    }
-                }
-            })
+        // NHFetch("/proData/selectDataList", "GET", { sign: 'dmk_xtgl_zt' })
+        //     .then(resData => {
+        //         if (resData && resData.data != null) {
+        //             if (resData.data[0] != null && resData.data[1] != null && resData.data[0].VALUE == '1' && resData.data[1].VALUE == '0') {
+        //                 this.setState({ zt0: resData.data[1].LABEL, zt1: resData.data[0].LABEL });
+        //             }
+        //         }
+        //     })
     }
     //选择左侧树节点的时候，刷新列表
     UNSAFE_componentWillReceiveProps(newProps) {

@@ -9,14 +9,6 @@ import EditForm from './editRole/EditForm.js';
 import {getLoginUser} from '../../../utils/NHCore';
 import css from './index.css';
 
-
-/**
- * 角色信息列表
- * @author yizhiqiang
- * @Email yizhiqiang@ly-sky.com
- * @date 2018-08-03 14:00
- * Version: 1.0
- */
 class Role extends React.Component {
     constructor(props) {
         super(props);
@@ -73,7 +65,7 @@ class Role extends React.Component {
                   let permissions=[];
                   if(res1.data){
                     res1.data.map((item) => {
-                      permissions.push(item.id);
+                      permissions.push(item.permissionId);
                       return;
                     });
                   }

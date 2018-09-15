@@ -15,9 +15,6 @@ import NHFormItem from "../../../components/NHFormItem";
      render(){
          return (
              <Form>
-                 <NHFormItem id={"oldPassWord"} label={"旧密码"} pattern={{min:6,max:16,message:"长度6-16位数字或字母"}}  form={this.props.form}  showFlag={true} required={true}>
-                     <Input  placeholder={"请输入6-16位数字或字母"}  />
-                 </NHFormItem>
                  <NHFormItem id={"newPassWord"} label={"新密码"} pattern={{min:6,max:16,message:"长度6-16位数字或字母"}} form={this.props.form} showFlag={true} required={true}>
                      <Input  placeholder={"请输入6-16位数字或字母"}/>
                  </NHFormItem>
