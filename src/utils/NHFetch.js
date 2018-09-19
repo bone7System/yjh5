@@ -2,6 +2,19 @@ import 'isomorphic-fetch';
 import { Modal,message} from 'antd';
 import {getLoginUser} from './NHCore';
 
+const startWith = (aimStr,str) => {
+  aimStr=aimStr+"";
+  if(str == null || str== "" || aimStr.length== 0 || str.length > aimStr.length){
+	 return false;
+  }
+  if(aimStr.substr(0,str.length) == str){
+     return true;
+  }else{
+     return false;
+   }
+  return true;
+}
+
 const hasClass = (node,className)=> {
     let exist=false;
     if (node.getAttribute('class')) {  // 存class属性
@@ -100,7 +113,7 @@ const NHFetch =  (pUrl,pMethod,params,errorFunc) => {
     let url = pUrl;
     let method = "";
 
-    if(url.startsWith("/")){
+    if(startWith(url,"/")){
         url='api'+url;
     }
 
@@ -202,17 +215,17 @@ const NHFetch =  (pUrl,pMethod,params,errorFunc) => {
                 return undefined;
             }else if(res && res.code && res.code !==200 ){//判断出现的问题
                 let msg=res.message;
-                if(msg.startsWith("businessLogicError[")){//自定义的提示（错误）
+                if(startWith(msg,"businessLogicError[")){//自定义的提示（错误）
                     Modal.error({ title: '错误提示', content: res.message.substring(19,res.message.length-1),});
-                }else if(msg.startsWith("businessLogicWarm[")){//自定义的提示（警告）
+                }else if(startWith(msg,"businessLogicWarm[")){//自定义的提示（警告）
                     Modal.warning({ title: '警告提示', content: res.message.substring(19,res.message.length-1),});
-                }else if(msg.startsWith("businessLogicInfo[")){//自定义的提示（消息）
+                }else if(startWith(msg,"businessLogicInfo[")){//自定义的提示（消息）
                     Modal.info({ title: '消息提示', content: res.message.substring(19,res.message.length-1),});
-                }else if(msg.startsWith("onlyDataError[")){//数据唯一性异常
+                }else if(startWith(msg,"onlyDataError[")){//数据唯一性异常
                     onlyDataErrorTip(res);
-                }else if(msg.startsWith("dataToLongError[")){//数据太长
+                }else if(startWith(msg,"dataToLongError[")){//数据太长
                     dataToLongErrorTip(res);
-                }else if(msg.startsWith("columnNotNull[")){//数据不能为空异常
+                }else if(startWith(msg,"columnNotNull[")){//数据不能为空异常
                     columnNotNullTip(res);
                 }else{
                     Modal.error({ title: '错误提示', content:'系统出现异常，请联系管理员！'});

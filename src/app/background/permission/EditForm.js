@@ -5,15 +5,6 @@ import NHSelect from '../../../components/NHSelect';
 const { TextArea } = Input;
 
 
-
-
-/**
- * 学校信息编辑表单
- * @author yizhiqiang
- * @Email yizhiqiang@ly-sky.com
- * @date 2018-03-02 14:00
- * Version: 1.0
- */
 class EditInitForm extends React.Component {
 
     constructor(props) {
