@@ -98,9 +98,6 @@ class EditInitForm extends React.Component {
       const target = this.getRowByKey(key, newData);
       if (target) {
         target[fieldName] = value;
-        if(target.count && target.count1 ){
-          target.count2=parseInt(target.count)-parseInt(target.count1);
-        }
         this.setState({ data: newData });
       }
     }
@@ -228,15 +225,15 @@ class EditInitForm extends React.Component {
               return this.NHInputNunber(text,record,'count',record.key,'数量');
             },
           },
-          {
-            title: '已交付数量',
-            dataIndex: 'count1',
-            key: 'count1',
-            // width: '20%',
-            render: (text, record) => {
-              return this.NHInputNunber(text,record,'count1',record.key,'已交付数量');
-            },
-          },
+          // {
+          //   title: '已交付数量',
+          //   dataIndex: 'count1',
+          //   key: 'count1',
+          //   // width: '20%',
+          //   render: (text, record) => {
+          //     return this.NHInputNunber(text,record,'count1',record.key,'已交付数量');
+          //   },
+          // },
           {
             title: '最晚交货日期',
             dataIndex: 'zwsj',
@@ -245,7 +242,7 @@ class EditInitForm extends React.Component {
               if (record.editable) {
                 return (
                   <DatePicker
-                    value={moment(new Date(text),'YYYY-MM-DD')}
+                    value={text?moment(new Date(text),'YYYY-MM-DD'):undefined}
                     format={'YYYY-MM-DD'}
                     onChange={(date, dateString) => this.handleDateFieldChange(date, dateString, 'zwsj', record.key)}
                     onKeyPress={e => this.handleKeyPress(e, record.key)}

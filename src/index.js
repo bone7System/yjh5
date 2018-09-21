@@ -1,5 +1,8 @@
 import dva from 'dva';
+import 'react-dom';
+import 'babel-polyfill';
 import './index.css';
+import 'antd/dist/antd.css';
 
 // 1. Initialize
 const app = dva();

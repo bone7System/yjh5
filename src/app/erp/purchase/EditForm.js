@@ -81,6 +81,8 @@ class EditInitForm extends React.Component {
             if(!item.isNew){
               item.rownum=seq;
               item.zwsj=item.zwsj?new Date(item.zwsj).valueOf():undefined;
+              item.count1=0;
+              item.count2=item.count;
               newDetailList.push(item);
             }
           });

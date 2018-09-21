@@ -69,13 +69,13 @@ class Permission extends React.Component {
     //查看按钮点击事件
     handleViewBtnClick = (record) => {
         let id = record.id;
-        // NHFetch('/menu/get', 'GET')
-        //     .then(res => {
-        //         if(res){
-        //             this.setState({formInitData: res.data});
-        //             this.setCurrentPageShow('showFlag');
-        //         }
-        //     })
+        NHFetch('/menu/get', 'GET')
+            .then(res => {
+                if(res){
+                    this.setState({formInitData: res.data});
+                    this.setCurrentPageShow('showFlag');
+                }
+            })
     }
 
     //单行删除
@@ -112,13 +112,13 @@ class Permission extends React.Component {
             }},
             {title: '供应商',width: '160px',dataIndex: 'lifnr_name',sorted:false},
             {title: '供应商订单号',width: '120px',dataIndex: 'lifnrOrder',sorted:false},
-            {title: '签单日期',width: '120px',dataIndex: 'qdrq',sorted:false},
-            {title: '来源单据',width: '120px',dataIndex: 'ydlx',sorted:false},
-            {title: '交货方式',width: '120px',dataIndex: 'jhfs_mc',sorted:false},
-            {title: '运送方式',width: '120px',dataIndex: 'ysfs_mc',sorted:false},
-            {title: '结算方式',width: '120px',dataIndex: 'jsfs_mc',sorted:false},
-            {title: '支付方式',width: '120px',dataIndex: 'zffs_mc',sorted:false},
-            {title: '总价格',width: '120px',dataIndex: 'kbetr',sorted:false},
+            {title: '点收日期',width: '120px',dataIndex: 'dsrq',sorted:false},
+            {title: '到货日期',width: '120px',dataIndex: 'dhrq',sorted:false},
+            {title: '签收人',width: '120px',dataIndex: 'qsr',sorted:false},
+            {title: '收货地址',minWidth: '120px',dataIndex: 'shdz',sorted:false},
+            {title: '备注',minWidth: '120px',dataIndex: 'remark',sorted:false},
+            {title: '创建时间',width: '120px',dataIndex: 'createTime',sorted:false},
+            {title: '创建人',width: '120px',dataIndex: 'createName',sorted:false},
         ];
         //行内操作
         const action = [
@@ -131,7 +131,7 @@ class Permission extends React.Component {
                 <div className={css.main_right_content} style={{height:getSize().contentH-16,display:this.state.frameVisibleMap.tableFlag?'block':'none'}}>
                     <NHTable ref='nhTable'
                              rowKey={record =>record.id}
-                             sign={"yj_erp_purchase"}
+                             sign={"yj_erp_take"}
                              columns={columns}
                              action={action}
                              initParams={initParams}
