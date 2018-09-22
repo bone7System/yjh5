@@ -1,6 +1,6 @@
 import React from 'react';
 import {  message  } from 'antd';
-import NBTree from '../../../components/NBTree';
+import NHTree from '../../../components/NHTree';
 import {NHConfirm , NHModal} from '../../../components/NHModal';
 import TreeForm from './TreeForm';
 import NHFetch from '../../../utils/NHFetch';
@@ -17,7 +17,7 @@ export default class Top extends React.Component{
 
 
     UNSAFE_componentWillMount(){
-        
+
 
     }
 
@@ -26,7 +26,7 @@ export default class Top extends React.Component{
         const fflid=selectNodes.length>0?selectNodes[0].fflid:undefined;
         this.props.onTreeSelect && this.props.onTreeSelect(dmbz,fflid);
     }
-    
+
     handleAddBtn = () => {
         this.refs.nhAddModal.show();
     }
@@ -79,7 +79,7 @@ export default class Top extends React.Component{
                 stopLoading();
                 return;
             }
-            formData.pkid = this.state.formInitData.pkid; 
+            formData.pkid = this.state.formInitData.pkid;
             NHFetch(baseUrl + '/dmk/fl/update' , 'POST' , formData)
                 .then(res => {
                     if (res) {
@@ -118,10 +118,10 @@ export default class Top extends React.Component{
                 isShow:this.handleIsShow
             }
         ]
-       
+
         return (
             <div>
-                <NBTree
+                <NHTree
                     ref="nhNBTree"
                     sign='yj_background_dmk_fl'
                     checkable={false}
@@ -133,13 +133,13 @@ export default class Top extends React.Component{
                     buttons={buttons}
                 />
                 <NHModal ref="nhAddModal"
-                        title="新增分类信息" 
+                        title="新增分类信息"
                         onOk={this.handleSaveAdd}
                 >
                     <TreeForm ref="nhAddForm"/>
                 </NHModal>
                 <NHModal ref="nhUpdateModal"
-                            title="修改分类信息" 
+                            title="修改分类信息"
                             onOk={this.handleSaveUpdate}
                 >
                     <TreeForm ref="nhUpdateForm" editData={this.state.formInitData}/>
