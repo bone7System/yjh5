@@ -21,11 +21,11 @@ class EditInitForm extends React.Component {
 
         return (
             <Form>
-                <NHFormItem id={'deptName'} label={"门店名称"} form={form} required={true} initialValue={editData?editData.deptname:undefined} >
+                <NHFormItem id={'deptName'} label={"部门名称"} form={form} required={true} initialValue={editData?editData.deptname:undefined} >
                     <Input />
                 </NHFormItem>
                 {
-                  this.props.isAdd?<NHFormItem id={'parentid'} label={"父级门店"} form={form} initialValue={editData?editData.parentid:undefined}>
+                  this.props.isAdd?<NHFormItem id={'parentid'} label={"部门门店"} form={form} initialValue={editData?editData.parentid:undefined}>
                       <NHSelect sign={'yj_dept'} />
                   </NHFormItem>:undefined
                 }

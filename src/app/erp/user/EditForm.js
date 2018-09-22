@@ -22,8 +22,8 @@ class EditInitForm extends React.Component {
         let sqlParams={client:getLoginUser().client+""}
         return (
             <Form>
-                <NHFormItem id={'userName'} label={"用户名"} form={form} required={true} initialValue={editData?editData.userName:undefined} >
-                    <Input />
+                <NHFormItem id={'userName'} label={"登录账号"} form={form} required={true} initialValue={editData?editData.userName:undefined} >
+                    <Input placeholder={'建议输入手机号作为登录账号'} />
                 </NHFormItem>
                 <NHFormItem id={'deptId'} label={"所属部门"} form={form} required={true} initialValue={editData?editData.parentid:undefined}>
                     <NHSelect sign={'yj_dept'} />
@@ -41,13 +41,13 @@ class EditInitForm extends React.Component {
                         <Input type={'password'} placeholder={"请输入6-16位数字或字母"}/>
                     </NHFormItem>:undefined
                 }
-                <NHFormItem id={'type'} label={"账号类型"} form={form} required={true} initialValue={editData?editData.type:undefined}>
+                {/* <NHFormItem id={'type'} label={"账号类型"} form={form} required={true} initialValue={editData?editData.type:undefined}>
                     <NHSelect sign={'dmk_ZHLX'} />
-                </NHFormItem>
-                <NHFormItem id={'phone'} label={"手机"} form={form} required={true} initialValue={editData?editData.phone:undefined} >
+                </NHFormItem> */}
+                <NHFormItem id={'phone'} label={"手机号码"} form={form} required={true} initialValue={editData?editData.phone:undefined} >
                     <Input />
                 </NHFormItem>
-                <NHFormItem id={'name'} label={"姓名"} form={form} required={true} initialValue={editData?editData.name:undefined} >
+                <NHFormItem id={'name'} label={"真实姓名"} form={form} required={true} initialValue={editData?editData.name:undefined} >
                     <Input />
                 </NHFormItem>
                 <NHFormItem id={'sex'} label={"性别"} form={form} required={true} initialValue={editData?editData.sex:1} >
@@ -63,7 +63,7 @@ class EditInitForm extends React.Component {
                     <Input />
                 </NHFormItem>
                 <NHFormItem id={'interest'} label={"兴趣爱好"} form={form}  initialValue={editData?editData.interest:undefined} >
-                    <Input />
+                    <TextArea style={{height:"80px"}} />
                 </NHFormItem>
             </Form>
         );

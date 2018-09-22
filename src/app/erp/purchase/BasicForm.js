@@ -70,7 +70,7 @@ class EditInitForm extends React.Component {
                 <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
                   <Form.Item label={'来源单据'}>
                     {getFieldDecorator('ydlx', {
-                      rules: [{ required: true, message: '请输入来源单据' }],
+                      rules: [{ required: false, message: '请输入来源单据' }],
                       initialValue: formInitData.ydlx,
                     })(<Input placeholder="请输入" />)}
                   </Form.Item>
@@ -78,7 +78,7 @@ class EditInitForm extends React.Component {
                 <Col xl={{ span: 8, offset: 2 }} lg={{ span: 10 }} md={{ span: 24 }} sm={24}>
                   <Form.Item label={'交货方式'}>
                     {getFieldDecorator('jhfs', {
-                      rules: [{ required: true, message: '请选择交货方式' }],
+                      rules: [{ required: false, message: '请选择交货方式' }],
                       initialValue: formInitData.jhfs,
                     })(<NHSelect sign={'DMK_JHFS'} />)}
                   </Form.Item>
@@ -88,7 +88,7 @@ class EditInitForm extends React.Component {
                 <Col lg={6} md={12} sm={24}>
                   <Form.Item label={'运送方式'}>
                     {getFieldDecorator('ysfs', {
-                      rules: [{ required: true, message: '请选择运送方式' }],
+                      rules: [{ required: false, message: '请选择运送方式' }],
                       initialValue: formInitData.ysfs,
                     })(
                       <NHSelect sign={'DMK_YSFS'} />
@@ -98,7 +98,7 @@ class EditInitForm extends React.Component {
                 <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
                   <Form.Item label={'结算方式'}>
                     {getFieldDecorator('jsfs', {
-                      rules: [{ required: true, message: '请选择结算方式' }],
+                      rules: [{ required: false, message: '请选择结算方式' }],
                       initialValue: formInitData.jsfs,
                     })(<NHSelect sign={'DMK_JSFS'} />)}
                   </Form.Item>
@@ -106,7 +106,7 @@ class EditInitForm extends React.Component {
                 <Col xl={{ span: 8, offset: 2 }} lg={{ span: 10 }} md={{ span: 24 }} sm={24}>
                   <Form.Item label={'支付方式'}>
                     {getFieldDecorator('zffs', {
-                      rules: [{ required: true, message: '请选择支付方式' }],
+                      rules: [{ required: false, message: '请选择支付方式' }],
                       initialValue: formInitData.zffs,
                     })(<NHSelect sign={'DMK_ZFFS'} />)}
                   </Form.Item>
