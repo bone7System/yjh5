@@ -19,6 +19,8 @@ function RouterConfig({ history , app }) {
       <AuthorizedRoute  path="/background/user" exact component={Dynamic({app,component: () => import("../app/erp/user")})}/>
       <AuthorizedRoute  path="/background/purchase" exact component={Dynamic({app,component: () => import("../app/erp/purchase")})}/>
       <AuthorizedRoute  path="/background/take" exact component={Dynamic({app,component: () => import("../app/erp/take")})}/>
+      <AuthorizedRoute  path="/background/supplier" exact component={Dynamic({app,component: () => import("../app/erp/supplier")})}/>
+      <AuthorizedRoute  path="/background/customer" exact component={Dynamic({app,component: () => import("../app/erp/customer")})}/>
     </BackLayout>
   );
 }

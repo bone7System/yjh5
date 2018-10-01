@@ -1,8 +1,9 @@
 import React from "react";
 import {Form, Input , Radio  , InputNumber} from 'antd';
-import NHFormItem from '../../../../components/NHFormItem';
-// import NHSelect from '../../../components/NHSelect';
+import NHFormItem from '../../../components/NHFormItem';
+import NHSelect from '../../../components/NHSelect';
 const { TextArea } = Input;
+const RadioGroup = Radio.Group;
 
 
 class EditInitForm extends React.Component {
@@ -20,10 +21,7 @@ class EditInitForm extends React.Component {
 
         return (
             <Form>
-                <NHFormItem id={'permission'} label={"权限值"} form={form} required={true} initialValue={editData?editData.permission:undefined} >
-                    <Input />
-                </NHFormItem>
-                <NHFormItem id={'description'} label={"标题"} form={form} required={true} initialValue={editData?editData.description:undefined}>
+                <NHFormItem id={'name'} label={"仓库名称"} form={form} required={true} initialValue={editData?editData.name:undefined} >
                     <Input />
                 </NHFormItem>
             </Form>

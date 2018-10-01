@@ -30,9 +30,9 @@ class FirstStep extends React.Component {
                                 initialValue={initFormData?initFormData.description:undefined}>
                         <TextArea placeholder="请输入100字以内的说明" style={{height:'80px'}}/>
                     </NHFormItem>
-                    <NHFormItem id={'parenId'} label={"上级角色"} form={form} initialValue={initFormData?initFormData.parentId:undefined}>
+                    {/* <NHFormItem id={'parenId'} label={"上级角色"} form={form} initialValue={initFormData?initFormData.parentId:undefined}>
                       <NHSelect sign={'yj_erp_role'} sqlParams={sqlParams}/>
-                   </NHFormItem>
+                   </NHFormItem> */}
                 </Form>
             </div>
         )

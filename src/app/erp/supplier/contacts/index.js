@@ -1,21 +1,15 @@
 import React from "react";
-import {message,Button,Icon} from 'antd';
+import {message,Button} from 'antd';
 import NHModal from '../../../../components/NHModal';
 import NHTable from '../../../../components/NHTable';
 import NHConfirm from '../../../../components/NHConfirm';
 import getSize from '../../../../utils/getSize';
 import NHFetch from '../../../../utils/NHFetch';
 import EditForm from './EditForm.js';
+import {getLoginUser} from '../../../../utils/NHCore';
 import css from './index.css';
 
 
-/**
- * 权限信息列表
- * @author yizhiqiang
- * @Email yizhiqiang@ly-sky.com
- * @date 2018-08-03 14:00
- * Version: 1.0
- */
 class Permission extends React.Component {
     constructor(props) {
         super(props);
@@ -30,10 +24,6 @@ class Permission extends React.Component {
         };
     }
 
-    onSearch = () => {
-      this.refs.nhTable.filterTableData();
-    }
-
     //选择行后显示删除操作按钮
     rowSelectionChange = (selectedRowKeys) => {
         this.setState({
@@ -43,33 +33,31 @@ class Permission extends React.Component {
 
     //新增按钮点击事件
     handleAddBtnClick = () => {
-        // this.setCurrentPageShow('addFlag');
         this.refs.nhAddModal.show();
     }
     //修改按钮点击事件
     handleUpdateBtnClick = (record) => {
-        let id = record.id;
-        NHFetch('/permisstion/getById', 'GET',{id:id})
-            .then(res => {
-                if(res){
-                    this.setState({formInitData: res.data});
-                    // this.setCurrentPageShow('updateFlag');
-                    this.refs.nhupdateModal.show();
-                }
-            })
+      let id = record.id;
+      NHFetch('/supplier-linkman/getById', 'GET',{id:id})
+          .then(res => {
+              if(res){
+                this.setState({formInitData: res.data});
+                this.refs.nhUpdateModal.show();
+              }
+          })
     }
 
     //单行删除
     handleSingleDeleteBtnClick = (record) => {
-       NHConfirm("是否确定删除这个权限？",() => {
+       NHConfirm("是否确定删除这条数据？",() => {
            let pkid = record.id;
-           this.handleDelete(pkid);
+           this.handleDelete([pkid]);
        },"warn");
     }
 
     //删除操作
-    handleDelete = (id) => {
-        NHFetch('/permisstion/delete' , 'POST' , {id:id})
+    handleDelete = (ids) => {
+        NHFetch('/spplier-linkman/delete' , 'POST' , ids)
             .then(res => {
                 if (res) {
                     message.success("删除操作成功！");
@@ -82,15 +70,14 @@ class Permission extends React.Component {
         this.refs.nhAddForm.validateFields((err, formData) => {
             if (err) {
               stopLoading();
-                return;
+              return;
             }
-            formData.menuId=this.props.menuId;
-            NHFetch('/permisstion/add' , 'POST' , formData)
+            formData.lfid=this.props.id;
+            NHFetch('/spplier-linkman/add' , 'POST' , formData)
                 .then(res => {
                     stopLoading();
                     if (res) {
-                        message.success("新增权限信息成功！");
-                        // this.setCurrentPageShow('tableFlag');
+                        message.success("新增联系人成功！");
                         this.refs.nhAddModal.close();
                         this.refs.nhTable.filterTableData();
                     }
@@ -103,16 +90,15 @@ class Permission extends React.Component {
         this.refs.nhUpdateForm.validateFields((err, formData) => {
             if (err) {
               stopLoading();
-                return;
+              return;
             }
             formData.id = this.state.formInitData.id;
-            formData.menuId = this.state.formInitData.menuId;
-            NHFetch('/permisstion/update' , 'POST' , formData)
+            formData.lfid = this.state.formInitData.lfid;
+            NHFetch('/spplier-linkman/update' , 'POST' , formData)
                 .then(res => {
                     stopLoading();
                     if (res) {
-                        message.success("修改权限信息成功！");
-                        // this.setCurrentPageShow('tableFlag');
+                        message.success("修改联系人成功！");
                         this.refs.nhUpdateModal.close();
                         this.refs.nhTable.filterTableData();
                     }
@@ -125,46 +111,46 @@ class Permission extends React.Component {
         //列参数
         const columns = [
             {title: '序号',width: '60px',dataIndex: 'rn'},
-            {title: '权限',width: '160px',dataIndex: 'permission',sorted:false},
-            {title: '标题',minWidth: '240px',dataIndex: 'description',sorted:false},
-            {title: '所属菜单',width: '120px',dataIndex: 'menuTitle',sorted:false},
-            {title: '创建时间',width: '120px',dataIndex: 'createTime',sorted:false},
-            {title: '创建人',width: '120px',dataIndex: 'createName',sorted:false},
+            {title: '姓名',width: '100px',dataIndex: 'name',sorted:false},
+            {title: '电话',width: '120px',dataIndex: 'phone',sorted:false},
+            {title: '邮箱',width: '160px',dataIndex: 'email',sorted:false},
+            {title: 'qq',width: '120px',dataIndex: 'qq',sorted:false},
+            {title: '地址',minWidth: '240px',dataIndex: 'address',sorted:false},
+            {title: '备注',minWidth: '160px',dataIndex: 'remark',sorted:false},
         ];
         //行内操作
         const action = [
             {title:'修改',onClick:this.handleUpdateBtnClick},
             {title:'删除',onClick:this.handleSingleDeleteBtnClick}
         ];
-        let params={'menuId_eq':this.props.menuId}
+        let params={
+          lfid:this.props.id
+        }
         return (
-            <div className={css.main_right_content} style={{height:getSize().contentH-16}}>
+            <div className={css.main_right_content} style={{height:getSize().contentH-106}}>
                 <div className={css.table} style={{display:this.state.frameVisibleMap.tableFlag?'block':'none'}}>
                     <NHTable ref='nhTable'
                              rowKey={record =>record.id}
-                             sign={"yj_erp_permission"}
+                             sign={"yj_erp_supplier_linkman"}
                              columns={columns}
                              action={action}
                              initParams={params}
                              rowSelectionChange={this.rowSelectionChange}
                     >
-                      <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} disabled={this.props.menuId==='-1'?true:false}>新增</Button>
-                      {/* <Button type="danger" ghost onClick={this.handleMultiDeleteBtnClick} style={{ marginRight: 10,display:this.state.showOperationBtn?undefined:'none' }} >删除</Button> */}
+                      <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
                     </NHTable>
                 </div>
                 <NHModal ref="nhAddModal"
-                         title="新增权限信息"
+                         title="新增联系人信息"
                          visible={this.state.frameVisibleMap.addFlag}
                          onOk={this.handleSaveAdd}
-                        //  onCancel={this.handleCloseFrame}
                 >
-                    <EditForm ref="nhAddForm"/>
+                    <EditForm ref="nhAddForm" />
                 </NHModal>
                 <NHModal ref="nhUpdateModal"
-                         title="修改权限信息"
+                         title="修改联系人信息"
                          visible={this.state.frameVisibleMap.updateFlag}
                          onOk={this.handleSaveUpdate}
-                        //  onCancel={this.handleCloseFrame}
                 >
                     <EditForm ref="nhUpdateForm" editData={this.state.formInitData}/>
                 </NHModal>

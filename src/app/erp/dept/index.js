@@ -25,24 +25,6 @@ class Permission extends React.Component {
         };
     }
 
-    //设置当前页面显示
-    // setCurrentPageShow = (showFlagName) => {
-    //     let frameVisibleMap=this.state.frameVisibleMap;
-    //     for(let name in frameVisibleMap){
-    //         if(name===showFlagName){
-    //             frameVisibleMap[name]=true;
-    //         }else{
-    //             frameVisibleMap[name]=false;
-    //         }
-    //     }
-    //     this.setState({
-    //         frameVisibleMap:frameVisibleMap
-    //     });
-    // }
-    //面板关闭按钮点击事件
-    // handleCloseFrame = () => {
-    //     this.setCurrentPageShow('tableFlag');
-    // }
     //选择行后显示删除操作按钮
     rowSelectionChange = (selectedRowKeys) => {
         this.setState({
@@ -152,7 +134,7 @@ class Permission extends React.Component {
         ];
         let user=getLoginUser();
         let params={
-          path:user.clientPath
+          client:user.client+''
         }
         return (
             <div className={css.main_right_content} style={{height:getSize().contentH-16}}>
@@ -162,6 +144,7 @@ class Permission extends React.Component {
                              sign={"yj_erp_dept"}
                              columns={columns}
                              action={action}
+                             initParams={params}
                              rowSelectionChange={this.rowSelectionChange}
                     >
                       <Button type="primary" ghost onClick={this.handleAddBtnClick} style={{ marginRight: 10 }} >新增</Button>
@@ -171,7 +154,6 @@ class Permission extends React.Component {
                          title="新增部门信息"
                          visible={this.state.frameVisibleMap.addFlag}
                          onOk={this.handleSaveAdd}
-                         onCancel={this.handleCloseFrame}
                 >
                     <EditForm ref="nhAddForm" isAdd={true}/>
                 </NHModal>
@@ -179,7 +161,6 @@ class Permission extends React.Component {
                          title="修改部门信息"
                          visible={this.state.frameVisibleMap.updateFlag}
                          onOk={this.handleSaveUpdate}
-                         onCancel={this.handleCloseFrame}
                 >
                     <EditForm ref="nhUpdateForm" isAdd={false} editData={this.state.formInitData}/>
                 </NHModal>
